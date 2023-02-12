@@ -1,7 +1,8 @@
 #+title: Kawane's Emacs Config
 #+author: Kawaneao1996
 * PACKAGE MANAGEMENT
-leaf -> use-package
+leaf -> use-packageを考えていたが、よくよく調べてみるとleafのほうが良さそう。
+https://qiita.com/conao3/items/82abfea7a4c81f946e60
 ** Setup package.el
 
 #+begin_src elisp
@@ -18,6 +19,33 @@ leaf -> use-package
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
   (setq use-package-always-ensure t)
+#+end_src
+* 組み込みの設定
+#+begin_src elisp
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(set-language-environment "Japanese")
+(prefer-coding-system 'utf-8)
+(set-default 'buffer-file-coding-system 'utf-8)
+(setq display-time-24hr-format t)
+;; (display-time)
+(display-battery-mode t)
+(setq toggle-truncate-line t)
+;; 直前/直後の括弧に対応する括弧を光らせます。
+(show-paren-mode)
+;;括弧の自動補完
+(electric-pair-mode 1)
+;; highlight entire bracket expression
+;;http://takeisamemo.blogspot.com/2013/07/emacs.html
+(setq show-paren-style 'expression)
+;;カーソルの点滅を消す
+(blink-cursor-mode 0)
+;; echo エリアの表示時間
+(setq echo-keystrokes 0.1)
+(global-set-key (kbd "C-c t") 'display-line-numbers-mode)
+;; linumよりも早い行数表示
+;; https://garaemon.hatenadiary.jp/entry/20
 #+end_src
 * Evil-Mode
 #+begin_src elisp
@@ -41,6 +69,300 @@ leaf -> use-package
   :config
   (general-evil-setup t))
 #+end_src
+* Garbage collection
+Makes startup faster by reducing the frequency of garbage collection
+#+begin_src elisp
+;; Using garbage magic hack.
+ (use-package gcmh
+   :config
+   (gcmh-mode 1))
+;; Setting garbage collection threshold
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
 
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+
+;; Silence compiler warnings as they can be pretty disruptive (setq comp-async-report-warnings-errors nil)
+#+end_src
+* Native Compile
+#+begin_src elisp
+;; Silence compiler warnings as they can be pretty disruptive
+(if (boundp 'comp-deferred-compilation)
+    (setq comp-deferred-compilation nil)
+    (setq native-comp-deferred-compilation nil))
+;; In noninteractive sessions, prioritize non-byte-compiled source files to
+;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
+;; to skip the mtime checks on every *.elc file.
+(setq load-prefer-newer noninteractive)
+#+end_src
+* font
+#+begin_src elisp
+  (setq default-frame-alist (append
+                             (list
+                              ;; '(font . "cica-16")
+                              '(font . "SourceHanCodeJP-14")
+                              )
+                             default-frame-alist))
+#+end_src
+** emacs font sourcehancodeJP インストール
+1. https://github.com/adobe-fonts/source-han-code-jp/releases でzipをダウンロード
+2. ターミナルで
+   #+begin_src bash
+   font-manager
+   #+end_src
+   から+を押してOTFフォルダの中身をすべてインストール
+3. init.elに
+   #+begin_src elisp
+     (setq default-frame-alist (append
+                                (list
+                                 ;; '(font . "cica-16")
+                                 '(font . "SourceHanCodeJP-14")
+                                 )
+                                default-frame-alist))
+
+   #+end_src
+
+*** 参考
+https://github.com/adobe-fonts/source-han-code-jp/releases
+
+https://ics.media/entry/7010/
+Entered on [2023-02-12 日 02:52]
+
+ [[file:~/デスクトップ/org/journal/20230212::*02:51 fontを変えた][02:51 fontを変えた]]
+** Cica フォントのインストール
+   - Note taken on [2022-10-01 土 23:03] \\
+     フォントの設定には
+     #+begin_src bash
+     gnome-tweaks
+     #+end_src
+     フォントの更新は
+     #+begin_src bash
+     sudo fc-cache -fv
+     #+end_src
+1. ファイルのダウンロード
+   https://github.com/miiton/Cica/releases/tag/v5.0.3
+
+2. ファイルの解凍
+   #+begin_src bash
+     cd ~/デスクトップ/work/Cica
+
+     unzip  Cica_v5.0.3.zip -d ./Cica
+
+   #+end_src
+
+3. fontをフォルダーに入れる
+   #+begin_src bash
+     sudo mkdir  /usr/share/fonts/truetype/cica
+   #+end_src
+   #+begin_src bash
+     sudo cp *.ttf /usr/share/fonts/truetype/cica/
+   #+end_src
+   #+begin_src bash
+     sudo fc-cache -vf
+   #+end_src
+
+4. 確認
+   #+begin_src bash
+     fc-list | grep -i cica
+   #+end_src
+
+5. gnomeのフォントに設定
+   #+begin_src bash
+     gsettings get org.gnome.Terminal.ProfilesList list ;
+     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ font "Cica 12"
+   #+end_src
+*** url
+https://zenn.dev/miwarin/articles/cab5028258b6df
+
+   Entered on [2022-09-25 日 18:50]
+* theme
+#+begin_src elisp
+  (use-package all-the-icons
+    :ensure t
+    :init
+    (all-the-icons-install-fonts))
+  (use-package doom-themes
+    :ensure t
+    ;; :config
+    ;; ;; Global settings (defaults)
+    ;; (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+    ;;       doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    ;; (load-theme 'doom-one t)
+
+    ;; ;; Enable flashing mode-line on errors
+    ;; (doom-themes-visual-bell-config)
+    ;; ;; Enable custom neotree theme (all-the-icons must be installed!)
+    ;; (doom-themes-neotree-config)
+    ;; ;; or for treemacs users
+    ;; (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+    ;; (doom-themes-treemacs-config)
+    ;; ;; Corrects (and improves) org-mode's native fontification.
+    ;; (doom-themes-org-config)
+    )
+  (use-package modus-themes
+    :ensure t
+    :config
+    (load-theme 'modus-vivendi-deuteranopia t))
+#+end_src
+* modeline
+* dashboard
+* org
+** org-capture
+** org-journal
+** exports latex
+* undo-tree(フォルダの木構造表示)
+* treemacs
+* rainbow-delimeters(括弧の色分け)
+** COMMENT leafで書いてあるのでuse-packageに書き換える
+#+begin_src elisp
+  ;;https://github.com/Fanael/rainbow-delimiters
+  ;;customization
+  ;;M-x customize-group rainbow-delimiters
+  (leaf leaf-convert
+    :hook ((prog-mode-hook . rainbow-delimiters-mode))
+    :require rainbow-delimiters)
+  ;; 括弧の色を強調する設定
+  (leaf leaf-convert
+    :preface
+    (defun rainbow-delimiters-using-stronger-colors nil
+      (interactive)
+      (cl-loop for index from 1 to rainbow-delimiters-max-face-count do
+               (let ((face (intern
+                            (format "rainbow-delimiters-depth-%d-face" index))))
+                 (cl-callf color-saturate-name (face-foreground face)
+                   30))))
+
+    :hook ((prog-mode-hook . rainbow-delimiters-using-stronger-colors))
+    :require cl-lib color)
+
+#+end_src
+* ivy(入力補完)
+* whitespace(スペースの可視化)
+** emacs whitespace 設定
+#+begin_src elisp
+  ;; 全角スペースを可視化する（cica -> sourcehancodejp のため）
+  ;; https://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
+  (require 'whitespace)
+  (setq whitespace-style '(face           ; faceで可視化
+                           trailing       ; 行末
+                           tabs           ; タブ
+                           spaces         ; スペース
+                           empty          ; 先頭/末尾の空行
+                           space-mark     ; 表示のマッピング
+                           tab-mark
+                           ))
+
+  (setq whitespace-display-mappings
+        '((space-mark ?\u3000 [?\u25a1])
+          ;; WARNING: the mapping below has a problem.
+          ;; When a TAB occupies exactly one column, it will display the
+          ;; character ?\xBB at that column followed by a TAB which goes to
+          ;; the next TAB column.
+          ;; If this is a problem for you, please, comment the line below.
+          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+
+  ;; スペースは全角のみを可視化
+  (setq whitespace-space-regexp "\\(\u3000+\\)")
+
+  ;; 保存前に自動でクリーンアップ
+  (setq whitespace-action '(auto-cleanup))
+
+
+  (defvar my/bg-color "#232323")
+  (set-face-attribute 'whitespace-trailing nil
+                      :background my/bg-color
+                      :foreground "DeepPink"
+                      :underline t)
+  (set-face-attribute 'whitespace-tab nil
+                      :background my/bg-color
+                      :foreground "LightSkyBlue"
+                      :underline t)
+  (set-face-attribute 'whitespace-space nil
+                      :background my/bg-color
+                      :foreground "GreenYellow"
+                      :weight 'bold)
+  (set-face-attribute 'whitespace-empty nil
+                      :background my/bg-color)
+
+  (global-whitespace-mode 1)
+#+end_src
+*** 参考
+https://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
+Entered on [2023-02-12 日 02:56]
+ [[file:~/デスクトップ/org/journal/20230212::*02:51 fontを変えた][02:51 fontを変えた]]
+* go-translate(翻訳)
+* imenu-list(コンテンツのツリー表示)
+* which-key(キーバインドの補助表示)
+* その他便利な関数
+** 透明度変更
+#+begin_src elisp
+(defun toggle-transparency ()
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (set-frame-parameter
+     nil 'alpha
+     (if (eql (cond ((numberp alpha) alpha)
+                    ((numberp (cdr alpha)) (cdr alpha))
+                    ;; Also handle undocumented (<active> <inactive>) form.
+                    ((numberp (cadr alpha)) (cadr alpha)))
+              100)
+         '(60 . 50) '(100 . 100)))))
+;; (set-frame-parameter (selected-frame) 'alpha '(100 . 50))
+
+#+end_src
+** org-modeのscratch buffer作成
+#+begin_src elisp
+;; scratch buffer をorg-modeで作成するmy-scratch-buffer
+;; https://emacs.stackexchange.com/questions/16492/is-it-possible-to-create-an-org-mode-scratch-buffer
+;; lawlistさん作
+(defun my-scratch-buffer ()
+"Create a new scratch buffer -- \*hello-world\*"
+(interactive)
+  (let ((n 0)
+        bufname buffer)
+    (catch 'done
+      (while t
+        (setq bufname (concat "*my-scratch-org-mode"
+          (if (= n 0) "" (int-to-string n))
+            "*"))
+        (setq n (1+ n))
+        (when (not (get-buffer bufname))
+          (setq buffer (get-buffer-create bufname))
+          (with-current-buffer buffer
+            (org-mode))
+          ;; When called non-interactively, the `t` targets the other window (if it exists).
+          (throw 'done (display-buffer buffer t))) ))))
+
+#+end_src
+* beacon(カーソル移動時に強調した表示をする)
+#+begin_src elisp
+  ;; beacon ：カーソルを移動した際に点滅させる
+  ;; https://github.com/Malabarba/beacon
+  ;; (beacon-mode 1)
+  ;; https://qiita.com/Ladicle/items/feb5f9dce9adf89652cf
+  (leaf beacon
+    :init
+    (let ((custom--inhibit-theme-enable nil))
+      (unless (memq 'use-package custom-known-themes)
+        (deftheme use-package)
+        (enable-theme 'use-package)
+        (setq custom-enabled-themes (remq 'use-package custom-enabled-themes)))
+      (custom-theme-set-variables 'use-package
+                                  '(beacon-color "green" nil nil "Customized with use-package beacon")))
+    :require t
+    :config
+    (beacon-mode 1))
+
+#+end_src
 * 参考
 - DistroTube
+  - https://gitlab.com/dwt1/dotfiles/-/blob/master/.emacs.d.gnu/config.org
+- use-packageで可読性の高いinit.elを書く
+  - https://qiita.com/kai2nenobu/items/5dfae3767514584f5220
