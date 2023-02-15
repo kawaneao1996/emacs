@@ -277,6 +277,237 @@
 
 #+end_src
 
+*** org latex
+#+begin_src elisp
+  
+;; latex の設定
+;;https://orgmode.org/worg/org-tutorials/org-latex-preview.html
+;; https://qiita.com/clothoid/items/2614635e243ba6225916
+(setq org-latex-create-formula-image-program 'dvipng)
+(setq org-latex-create-formula-image-program 'imagemagick)
+
+; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
+
+;; PATHを追加
+;; (setenv "PATH"
+;;   (concat
+;;    "C:/texlive/2018/bin/win32;"
+;;    "C:/Users/Administrator/AppData/Local/Programs/Python/Python37/Scripts;"
+;;    (getenv "PATH")))
+;; (setq exec-path (parse-colon-path (getenv "PATH")))
+
+;; babel の中で tab が ^^I に変換されてしまうので、スペースにする
+(setq-default tab-width 4 indent-tabs-mode nil)
+
+(require 'ox-latex)
+(require 'ox-beamer)
+;;; 勝手に入力される \hypersetup{} は使わない(usepackage の順序依存に配慮)
+(setq org-latex-with-hyperref nil)
+(add-to-list 'org-latex-packages-alist "\\hypersetup{setpagesize=false}" t)
+(add-to-list 'org-latex-packages-alist "\\hypersetup{colorlinks=true}" t)
+(add-to-list 'org-latex-packages-alist "\\hypersetup{linkcolor=blue}" t)
+
+(setq org-latex-pdf-process
+      '("platex -shell-escape %f"
+        "platex -shell-escape %f"
+        "pbibtex %b"
+        "platex -shell-escape %f"
+        "platex -shell-escape %f"
+        "dvipdfmx %b.dvi"))
+
+(setq org-latex-title-command "\\maketitle")
+(setq org-latex-toc-command
+      "\\tableofcontents\n")
+(setq org-latex-text-markup-alist '((bold . "\\textbf{%s}")
+                (code . verb)
+                (italic . "\\it{%s}")
+                (strike-through . "\\sout{%s}")
+                (underline . "\\uline{%s}")
+                (verbatim . protectedtexttt)))
+(setq org-beamer-outline-frame-title "目次")
+(setq org-export-latex-listings t)
+(setq org-latex-listings 'minted)
+(setq org-latex-minted-options
+      '(("frame" "lines")
+        ;; ("frame" "single")
+        ;; ("bgcolor=LightGray")
+        ;; latex mintedの背景色をグレーにする
+        ;; #+LATEX_HEADER: \usepackage{minted}
+        ;; #+LATEX_HEADER: \usepackage{xcolor} % to access the named colour LightGray
+        ;; #+LATEX_HEADER: \definecolor{LightGray}{gray}{0.9}
+        ("framesep=2mm")
+        ;; ("framesep=0mm")
+        ("linenos=true")
+        ("baselinestretch=1.2")
+        ("fontsize=\\small")
+        ("breaklines")
+        ))
+
+;; class は自分で再定義
+;; NO-DEFAULT-PACKAGES で勝手に入る package を抑制
+;; (上記のように org-latex-packages-alist で定義すべきかも?)
+(add-to-list 'org-latex-classes
+             '("myjsarticle"
+               "\\documentclass{jsarticle}
+[NO-DEFAULT-PACKAGES]
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage[dvipdfmx]{color}
+\\usepackage[dvipdfmx]{hyperref}
+\\usepackage{pxjahyper}"
+  ("\\section{%s}" . "\\section*{%s}")
+  ("\\subsection{%s}" . "\\subsection*{%s}")
+  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(add-to-list 'org-latex-classes
+             '("article"
+               "\\documentclass{jsarticle}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage[dvipdfmx]{color}
+\\usepackage[dvipdfmx]{hyperref}
+\\usepackage{amsmath}
+\\usepackage{amsfonts}
+\\usepackage{pxjahyper}
+\\usepackage[utf8]{inputenc}
+\\usepackage{fixltx2e}
+\\usepackage{graphicx}
+\\usepackage{longtable}
+\\usepackage{float}
+\\usepackage{wrapfig}
+\\usepackage{rotating}
+\\usepackage[normalem]{ulem}
+#+LATEX_HEADER: \let\Re\relax
+#+LATEX_HEADER: \DeclareMathOperator{\Re}{Re}
+#+LATEX_HEADER: \let\Im\relax
+#+LATEX_HEADER: \DeclareMathOperator{\Im}{Im}
+\\usepackage{textcomp}
+\\usepackage{marvosym}
+\\usepackage{wasysym}
+\\usepackage{amssymb}
+\\usepackage{hyperref}
+\\usepackage{mathpazo}
+\\usepackage{color}
+\\usepackage{enumerate}
+\\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\\tolerance=1000
+      [NO-DEFAULT-PACKAGES]
+      [PACKAGES]
+      [EXTRA]
+\\linespread{1.1}
+\\hypersetup{pdfborder=0 0 0}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")))
+(add-to-list 'org-latex-classes
+             '("original"
+               "\\documentclass{jsarticle}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")))
+(add-to-list 'org-latex-classes
+             '("my_article2"
+               "\\documentclass[dvipdfmx,11pt]{jsarticle}
+\\usepackage{siunitx}
+\\usepackage{stix2}
+\\usepackage[sb]{libertine}
+\\usepackage[T1]{fontenc}
+\\usepackage[varqu , varl]{zi4}
+\\usepackage{libertinust1math}
+\\usepackage[cal=stix,scr=boondoxo,bb=boondox]{mathalfa}
+\\numberwithin{equation}{section}
+\\usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
+\\usepackage{booktabs}
+\\usepackage{fancyhdr}
+\\usepackage{lastpage}
+\\usepackage[dvipdfmx]{graphicx}
+\\usepackage{subcaption}
+\\usepackage{comment}
+\\usepackage{booktabs}
+\\usepackage{minted}
+;; \\usepackage{xcolor} % to access the named colour LightGray
+;; \\definecolor{LightGray}{gray}{0.9}
+
+\\fancypagestyle{mypagestyle}{
+\\lhead{}
+\\rhead{}
+\\cfoot{}
+\\rfoot{\\thepage/\\pageref{LastPage}}
+\\renewcommand{\\headrulewidth}{0.0pt}
+}
+\\setcounter{page}{0}
+
+\\makeatletter
+	\\renewcommand{\\theequation}{
+	\\thesection.\\arabic{equation}}
+	\\@addtoreset{equation}{section}
+
+	\\renewcommand{\\thefigure}{
+	\\thesection.\\arabic{figure}}
+	\\@addtoreset{figure}{section}
+
+	\\renewcommand{\\thetable}{
+	\\thesection.\\arabic{table}}
+	\\@addtoreset{table}{section}
+\\makeatother
+\\setcounter{tocdepth}{3}
+"))
+(add-to-list 'org-latex-classes
+             '(
+               "koma-jarticle"
+               "\\documentclass[12pt]{scrartcl}
+                [NO-DEFAULT-PACKAGES]
+                \\usepackage{amsmath}
+                \\usepackage{amssymb}
+                \\usepackage{mathrsfs}
+                \\usepackage{xunicode}
+                \\usepackage{fixltx2e}
+                \\usepackage{zxjatype}
+                \\usepackage[ipa]{zxjafont}
+                \\usepackage{xltxtra}
+                \\usepackage{graphicx}
+                \\usepackage{longtable}
+                \\usepackage{float}
+                \\usepackage{wrapfig}
+                \\usepackage{soul}
+                \\usepackage[xetex]{hyperref}
+                \\usepackage{xcolor}
+                \\usepackage{minted}
+                \\usepackage{geometry}
+                \\geometry{left=1cm,right=1cm,top=1cm,bottom=1cm}
+                \\usepackage[natbib=true]{biblatex}
+                \\DeclareFieldFormat{apacase}{#1}
+                \\addbibresource{~/myspace/Bibliography/references.bib}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+
+;;https://orgmode.org/worg/org-tutorials/org-latex-preview.html
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+
+;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-LaTeX.html
+(setq exec-path (append exec-path '("/Library/TeX/texbin")))
+(load "auctex.el" nil t t)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((latex . t)))
+
+;; latex mintedの背景色をグレーにする
+;; #+LATEX_HEADER: \usepackage{minted}
+;; #+LATEX_HEADER: \usepackage{xcolor} % to access the named colour LightGray
+;; #+LATEX_HEADER: \definecolor{LightGray}{gray}{0.9}
+;; (setq org-latex-listings 'minted)
+;; (setq org-latex-minted-options
+;;       '(("frame" "single") ("linenos=true")("bgcolor=LightGray")))
+
+#+end_src
+
 ** undo-tree
 #+begin_src elisp
     (leaf undo-tree
@@ -311,6 +542,7 @@
   :config
   (ivy-mode 1))
   (global-set-key (kbd "C-c V") 'ivy-pop-view)
+  (setq ivy-initial-inputs-alist nil)
 #+end_src
 
 ** beacon
@@ -584,8 +816,6 @@
            (dashboard-set-file-icons . t)
            (dashboard-set-heading-icons . t)
            (dashboard-startup-banner . "~/.emacs.d/emacs_logo_114_2.png")
-           ;; (dashboard-startup-banner . "~/.emacs.d/blackhole.png")
-           ;; (dashboard-startup-banner . "~/ピクチャ/自作/ブラックホールのようなχ.png")
            )
     :config
     (leaf dashboard
@@ -596,6 +826,279 @@
 
   (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 #+end_src
+
+** reftex
+#+begin_src elisp
+    ;; latexのbibtexの設定
+  ;; reftex
+  ;; https://taipapamotohus.com/post/org-mode_paper_3/
+  (leaf reftex)
+  (defun org-mode-reftex-setup ()
+    (load-library "reftex")
+    (and (buffer-file-name)
+         (file-exists-p (buffer-file-name))
+         (reftex-parse-all))
+    (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
+    )
+  (add-hook 'org-mode-hook 'org-mode-reftex-setup)
+
+  (leaf leaf-convert
+    :require org ox-bibtex)
+
+  ;; So that RefTeX finds my bibliography
+  ;; (setq reftex-default-bibliography "/home/kawane/デスクトップ/研究/bibfile/")
+
+#+end_src
+
+** gts(翻訳)
+#+begin_src elisp
+  ;; deepl
+  ;; https://hangstuck.com/emacs-deepl/
+  ;; your languages pair used to translate
+  (leaf leaf-convert
+    :require go-translate)
+
+  ;; your languages pair used to translate
+  (setq gts-translate-list '(("en" "ja") ("ja" "en")))
+
+  ;; config the default translator, it will be used by command gts-do-translate
+  (setq gts-default-translator
+        (gts-translator
+
+         :picker ; used to pick source text, from, to. choose one.
+
+         ;;(gts-noprompt-picker)
+         ;;(gts-noprompt-picker :texter (gts-whole-buffer-texter))
+         (gts-prompt-picker)
+         ;;(gts-prompt-picker :single t)
+         ;;(gts-prompt-picker :texter (gts-current-or-selection-texter) :single t)
+
+         :engines ; engines, one or more. Provide a parser to give different output.
+
+         (list
+          ;;(gts-bing-cn-engine)
+          (gts-google-engine)
+          ;;(gts-google-rpc-engine)
+          ;; (gts-deepl-engine :auth-key "d4eda04c-b7ca-7075-def2-7bac3d4e7807" :pro nil)
+          ;;(gts-google-engine :parser (gts-google-summary-parser))
+          ;;(gts-google-engine :parser (gts-google-parser))
+          ;;(gts-google-rpc-engine :parser (gts-google-rpc-summary-parser) :url "https://translate.google.com")
+          ;;(gts-google-rpc-engine :parser (gts-google-rpc-parser) :url "https://translate.google.com")
+          )
+
+         :render ; render, only one, used to consumer the output result. Install posframe yourself when use gts-posframe-xxx
+
+         (gts-buffer-render)
+         ;; (gts-posframe-pop-render)
+         ;;(gts-posframe-pop-render :backcolor "#333333" :forecolor "#ffffff")
+         ;; (gts-posframe-pin-render)
+         ;; (gts-posframe-pin-render :position (cons 1200 20))
+         ;;(gts-posframe-pin-render :width 80 :height 25 :position (cons 1000 20) :forecolor "#ffffff" :backcolor "#111111")
+         ;;(gts-kill-ring-render)
+         ))
+
+  ;;(setq go-translate-buffer-follow-p t)       ; focus the result window
+  ;;(setq go-translate-buffer-source-fold-p t)  ; fold the source text in the result window
+  ;;(setq go-translate-buffer-window-config ..) ; config the result window as your wish
+
+  (global-set-key (kbd "C-c ?") 'gts-do-translate)
+
+
+#+end_src
+
+** org-download
+#+begin_src elisp
+  ;; org-modeで画像のコピペ
+  ;;https://github.com/abo-abo/org-download
+
+  (leaf leaf-convert
+    :require org-download)
+  ;; Drag-and-drop to `dired`
+  (leaf leaf-convert
+    :hook ((org-mode-hook . org-download-enable)))
+
+#+end_src
+
+** daemon
+#+begin_src elisp
+  ;; https://www.yokoweb.net/2017/01/15/macos-emacs-emacsclient/
+  ;; server start for emacs-client
+  (when window-system                       ; GUI時
+    (require 'server)
+    (unless (eq (server-running-p) 't)
+      (server-start)
+
+      (defun iconify-emacs-when-server-is-done ()
+        (unless server-clients (iconify-frame)))
+
+      ;; C-x C-cに割り当てる(好みに応じて)
+      ;; (global-set-key (kbd "C-x C-c") 'server-edit)
+      ;; M-x exitでEmacsを終了できるようにする
+      (defalias 'exit 'save-buffers-kill-emacs)
+      ;; 起動時に最小化する
+      (add-hook 'after-init-hook 'iconify-emacs-when-server-is-done)
+      ;; 終了時にyes/noの問い合わせ
+      (setq confirm-kill-emacs 'y-or-n-p)
+      )
+    )
+
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+#+end_src
+
+** projectile
+#+begin_src elisp
+  ;; https://docs.projectile.mx/projectile/installation.html
+(leaf leaf-convert
+  :require projectile)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(projectile-mode +1)
+(setq projectile-project-search-path '( ("~/work" . 1)))
+(setq projectile-completion-system 'ivy)
+
+#+end_src
+
+** treemacs
+#+begin_src elisp
+  (use-package treemacs
+    :ensure t
+    :defer t
+    :init
+    (with-eval-after-load 'winum
+      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+    :config
+    (progn
+      (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
+            treemacs-deferred-git-apply-delay        0.5
+            treemacs-directory-name-transformer      #'identity
+            treemacs-display-in-side-window          t
+            treemacs-eldoc-display                   'simple
+            treemacs-file-event-delay                2000
+            treemacs-file-extension-regex            treemacs-last-period-regex-value
+            treemacs-file-follow-delay               0.2
+            treemacs-file-name-transformer           #'identity
+            treemacs-follow-after-init               t
+            treemacs-expand-after-init               t
+            treemacs-find-workspace-method           'find-for-file-or-pick-first
+            treemacs-git-command-pipe                ""
+            treemacs-goto-tag-strategy               'refetch-index
+            treemacs-header-scroll-indicators        '(nil . "^^^^^^")
+            treemacs-hide-dot-git-directory          t
+            treemacs-indentation                     2
+            treemacs-indentation-string              " "
+            treemacs-is-never-other-window           nil
+            treemacs-max-git-entries                 5000
+            treemacs-missing-project-action          'ask
+            treemacs-move-forward-on-expand          nil
+            treemacs-no-png-images                   nil
+            treemacs-no-delete-other-windows         t
+            treemacs-project-follow-cleanup          nil
+            treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+            treemacs-position                        'left
+            treemacs-read-string-input               'from-child-frame
+            treemacs-recenter-distance               0.1
+            treemacs-recenter-after-file-follow      nil
+            treemacs-recenter-after-tag-follow       nil
+            treemacs-recenter-after-project-jump     'always
+            treemacs-recenter-after-project-expand   'on-distance
+            treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
+            treemacs-project-follow-into-home        nil
+            treemacs-show-cursor                     nil
+            treemacs-show-hidden-files               t
+            treemacs-silent-filewatch                nil
+            treemacs-silent-refresh                  nil
+            treemacs-sorting                         'alphabetic-asc
+            treemacs-select-when-already-in-treemacs 'move-back
+            treemacs-space-between-root-nodes        t
+            treemacs-tag-follow-cleanup              t
+            treemacs-tag-follow-delay                1.5
+            treemacs-text-scale                      nil
+            treemacs-user-mode-line-format           nil
+            treemacs-user-header-line-format         nil
+            treemacs-wide-toggle-width               70
+            treemacs-width                           35
+            treemacs-width-increment                 1
+            treemacs-width-is-initially-locked       t
+            treemacs-workspace-switch-cleanup        nil)
+
+      ;; The default width and height of the icons is 22 pixels. If you are
+      ;; using a Hi-DPI display, uncomment this to double the icon size.
+      ;;(treemacs-resize-icons 44)
+
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t)
+      (treemacs-fringe-indicator-mode 'always)
+      (when treemacs-python-executable
+        (treemacs-git-commit-diff-mode t))
+
+      (pcase (cons (not (null (executable-find "git")))
+                   (not (null treemacs-python-executable)))
+        (`(t . t)
+         (treemacs-git-mode 'deferred))
+        (`(t . _)
+         (treemacs-git-mode 'simple)))
+
+      (treemacs-hide-gitignored-files-mode nil))
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ("C-x t 1"   . treemacs-delete-other-windows)
+          ("C-x t t"   . treemacs)
+          ("C-x t d"   . treemacs-select-directory)
+          ("C-x t B"   . treemacs-bookmark)
+          ("C-x t C-t" . treemacs-find-file)
+          ("C-x t M-t" . treemacs-find-tag)))
+
+  (use-package treemacs-evil
+    :after (treemacs evil)
+    :ensure t)
+
+  (use-package treemacs-projectile
+    :after (treemacs projectile)
+    :ensure t)
+
+  (use-package treemacs-icons-dired
+    :hook (dired-mode . treemacs-icons-dired-enable-once)
+    :ensure t)
+
+  (use-package treemacs-magit
+    :after (treemacs magit)
+    :ensure t)
+
+  ;; (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+  ;;   :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+  ;;   :ensure t
+  ;;   :config (treemacs-set-scope-type 'Perspectives))
+
+  ;; (use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
+  ;;   :after (treemacs)
+  ;;   :ensure t
+  ;;   :config (treemacs-set-scope-type 'Tabs))
+  (with-eval-after-load "treemacs-mode"
+    (define-key undo-tree-map (kbd "C-?") nil))
+
+#+end_src
+
+** magit
+#+begin_src elisp
+  (leaf magit)
+  (global-set-key (kbd "C-x g") 'magit-status)
+#+end_src
+
+** volatile-highlights
+#+begin_src elisp
+  ;; 操作した際に、操作箇所を強調表示する
+(leaf volatile-highlights
+  :ensure t
+  :require t
+  ;; :diminish volatile-highlights-mode
+  :config
+  (volatile-highlights-mode t))
+
+
+
+#+end_src
+
 * use-package(require)で書いてある設定
 #+begin_src elisp
   (require 'use-package) 
@@ -603,6 +1106,289 @@
   :if (display-graphic-p))
 
 #+end_src
+** theme
+*** modus
+#+begin_src elisp
+  (use-package modus-themes)
+  (load-theme 'modus-vivendi-tinted t)
+#+end_src
+** whitespace
+#+begin_src elisp
+  (use-package whitespace)
+  ;; 全角スペースを可視化する（cica -> sourcehancodejp のため）
+  ;; https://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
+  (require 'whitespace)
+  (setq whitespace-style '(face           ; faceで可視化
+                           trailing       ; 行末
+                           tabs           ; タブ
+                           spaces         ; スペース
+                           empty          ; 先頭/末尾の空行
+                           space-mark     ; 表示のマッピング
+                           tab-mark
+                           ))
+
+  (setq whitespace-display-mappings
+        '((space-mark ?\u3000 [?\u25a1])
+          ;; WARNING: the mapping below has a problem.
+          ;; When a TAB occupies exactly one column, it will display the
+          ;; character ?\xBB at that column followed by a TAB which goes to
+          ;; the next TAB column.
+          ;; If this is a problem for you, please, comment the line below.
+          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+
+  ;; スペースは全角のみを可視化
+  (setq whitespace-space-regexp "\\(\u3000+\\)")
+
+  ;; 保存前に自動でクリーンアップ
+  (setq whitespace-action '(auto-cleanup))
+
+
+  (defvar my/bg-color "#232323")
+  (set-face-attribute 'whitespace-trailing nil
+                      :background my/bg-color
+                      :foreground "DeepPink"
+                      :underline t)
+  (set-face-attribute 'whitespace-tab nil
+                      :background my/bg-color
+                      :foreground "LightSkyBlue"
+                      :underline t)
+  (set-face-attribute 'whitespace-space nil
+                      :background my/bg-color
+                      :foreground "GreenYellow"
+                      :weight 'bold)
+  (set-face-attribute 'whitespace-empty nil
+                      :background my/bg-color)
+
+  (global-whitespace-mode 1)
+
+#+end_src
+** ein
+#+begin_src elisp
+    ;; einの設定
+  ;; https://tam5917.hatenablog.com/entry/2021/03/28/204747
+      (use-package ein)
+    (use-package ein-notebook)
+    (use-package ein-notebooklist)
+    (use-package ein-markdown-mode)
+    (use-package smartrep)
+  (eval-when-compile
+    (require 'ein)
+    (require 'ein-notebook)
+    (require 'ein-notebooklist)
+    (require 'ein-markdown-mode)
+    (require 'smartrep))
+
+  (add-hook 'ein:notebook-mode-hook 'electric-pair-mode) ;; お好みで
+  (add-hook 'ein:notebook-mode-hook 'undo-tree-mode) ;; お好みで
+
+  ;; undoを有効化 (customizeから設定しておいたほうが良さげ)
+  (setq ein:worksheet-enable-undo t)
+
+  ;; 画像をインライン表示 (customizeから設定しておいたほうが良さげ)
+  (setq ein:output-area-inlined-images t)
+
+  ;; markdownパーサー
+  ;; M-x ein:markdown →HTMLに翻訳した結果を*markdown-output*バッファに出力
+  (require 'ein-markdown-mode)
+
+  ;; pandocと markdownコマンドは入れておく
+  ;; brew install pandoc
+  ;; brew install markdown
+  (setq ein:markdown-command "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
+
+  ;; markdownをhtmlに出力してブラウザでプレビュー
+  (defun ein:markdown-preview ()
+    (interactive)
+    (ein:markdown-standalone)
+    (browse-url-of-buffer ein:markdown-output-buffer-name))
+
+  ;; smartrepを入れておく。
+  ;; C-c C-n C-n C-n ... で下のセルに連続で移動、
+  ;; その途中でC-p C-p C-pで上のセルに連続で移動など
+  ;; セル間の移動がスムーズになってとても便利
+  (declare-function smartrep-define-key "smartrep")
+  (with-eval-after-load "ein-notebook"
+    (smartrep-define-key ein:notebook-mode-map "C-c"
+      '(("C-n" . 'ein:worksheet-goto-next-input-km)
+        ("C-p" . 'ein:worksheet-goto-prev-input-km))))
+
+#+end_src
+** pdf-tools
+#+begin_src elisp
+    ;; pdf-tools
+  ;; https://github.com/vedang/pdf-tools
+  (use-package pdf-tools)
+  (pdf-tools-install)  ; Standard activation command
+  ;; (setq pdf-view-midnight-colors '("#a9b1d6" . "#1a1b26"))
+
+  (add-hook 'pdf-tools-enabled-hook  'pdf-view-themed-minor-mode)
+#+end_src
+** git-gutter
+#+begin_src elisp
+  (use-package git-gutter
+    :custom
+    (git-gutter:modified-sign "~")
+    (git-gutter:added-sign    "+")
+    (git-gutter:deleted-sign  "-")
+    :custom-face
+    (git-gutter:modified ((t (:background "#f1fa8c"))))
+    (git-gutter:added    ((t (:background "#50fa7b"))))
+    (git-gutter:deleted  ((t (:background "#ff79c6"))))
+    :config
+    (global-git-gutter-mode +1))
+#+end_src
+** minimap
+#+begin_src elisp
+  (use-package minimap)
+  ;; https://hohei3108.hatenablog.com/entry/2018/02/13/165957
+  (require 'minimap)
+  ;; (minimap-mode 1); 常に有効にする
+  (setq minimap-window-location 'right); windowの位置
+  (setq minimap-update-delay 0.2); 表示を更新する時間
+  (setq minimap-minimum-width 20); 幅の長さ
+  ;; 有効にしたいモード
+  (setq minimap-major-modes '(latex-mode
+                              LaTeX-mode
+                              tex-mode
+                              TeX-mode
+                              text-mode
+                              prog-mode
+                              html-mode
+                              fundamental-mode
+                              csv-mode
+                              org-mode))
+  ;; 適当なキーに割り当てる
+  (global-set-key (kbd "C-x m") 'minimap-mode); toggle
+
+#+end_src
+** doom-modeline
+#+begin_src elisp
+  (use-package doom-modeline)
+(require 'doom-modeline)
+  ;; Whether display the modal state.
+  ;; Including `evil', `overwrite', `god', `ryo' and `xah-fly-keys', etc.
+  (setq doom-modeline-modal t)
+
+  ;; Whether display the modal state icon.
+  ;; Including `evil', `overwrite', `god', `ryo' and `xah-fly-keys', etc.
+  (setq doom-modeline-modal-icon nil)
+
+  ;; ;; Whether display the battery status. It respects `display-battery-mode'.
+  ;; (setq doom-modeline-battery t)
+
+  ;; ;; Whether display the time. It respects `display-time-mode'.
+  ;; (setq doom-modeline-time t)
+
+#+end_src
+** evil
+#+begin_src elisp
+  ;; https://github.com/seagle0128/doom-modeline/issues/8
+  ;;
+  ;; evil-state
+  ;;
+  (use-package evil)
+  (require 'evil)
+  (doom-modeline-def-segment evil-state
+    "The current evil state.  Requires `evil-mode' to be enabled."
+    (when (bound-and-true-p evil-local-mode)
+      (s-trim-right (evil-state-property evil-state :tag t))))
+
+  (setq evil-normal-state-tag   (propertize "[Normal]" 'face '((:background "green" :foreground "black")))
+        evil-emacs-state-tag    (propertize "[Emacs]" 'face '((:background "orange" :foreground "black")))
+        evil-insert-state-tag   (propertize "[Insert]" 'face '((:background "red") :foreground "white"))
+        evil-motion-state-tag   (propertize "[Motion]" 'face '((:background "blue") :foreground "white"))
+        evil-visual-state-tag   (propertize "[Visual]" 'face '((:background "grey80" :foreground "black")))
+        evil-operator-state-tag (propertize "[Operator]" 'face '((:background "purple"))))
+  (add-hook 'after-init-hook #'doom-modeline-mode)
+
+  (evil-mode 1)
+  ;; (evil-set-initial-state 'org-mode 'emacs)
+  (setq evil-default-state 'emacs)
+  ;; (setq evil-default-state 'normal)
+
+  (setq evil-normal-state-cursor '(box "magenta")
+        evil-insert-state-cursor '(bar "medium sea green")
+        evil-visual-state-cursor '(hollow "orange")
+        evil-emacs-state-cursor '(box "cyan"))
+
+  (evil-set-undo-system 'undo-tree)
+
+
+  ;; https://qiita.com/acro5piano/items/adaa18258435b870441e
+  (bind-keys :map evil-visual-state-map
+             ("TAB" . indent-for-tab-command)
+             ("#" . comment-dwim))
+
+  (bind-keys :map evil-normal-state-map
+             ;; ("SPC b" . ido-switch-buffer)
+             ("SPC b" . ivy-switch-buffer)
+             ;; ("SPC f" . projectile-find-file)
+             ("SPC f" . counsel-find-file)
+             ;; ("SPC a" . helm-do-ag-project-root)
+             ("SPC a" . ace-window)
+             ;; ("SPC x" . smex)
+             ;; ("SPC x" . smex)
+             ("SPC i" . imenu-list-smart-toggle)
+             ("SPC e" . exit)
+             ("SPC s" . save-buffer)
+             ("SPC /" . swiper)
+             ("SPC !" . shell)
+             ("SPC d" . dired-jump)
+             ("SPC k" . kill-this-buffer)
+             ("SPC r" . ido-recentf-open)
+             ("SPC 1" . delete-other-windows)
+             ("SPC 0" . delete-window)
+             ("SPC z" . zone)
+             ;; ("SPC q" . save-buffers-kill-terminal)
+             ("SPC q" . delete-frame)
+             ;; ("SPC t" . xref-find-definitions-other-window)
+             ("SPC t" . treemacs)
+             ("SPC O" . (lambda nil (interactive) (show-org-buffer "memo.org")))
+             ("SPC x" . xref-find-definitions-other-window)
+             ;; ("SPC y" . browse-kill-ring)
+             ("SPC g" . magit-status)
+             ("SPC y" . counsel-yank-pop)
+             ("TAB" . indent-for-tab-command)
+             ("SPC u" . undo-tree)
+             ("SPC @" . toggle-transparency)
+             ("SPC SPC" . counsel-M-x))
+  (bind-keys :map evil-insert-state-map
+             ("C-g" . evil-normal-state))
+
+#+end_src
+** keycast
+#+begin_src elisp
+    (use-package keycast)
+    (require 'keycast)
+  (keycast-header-line-mode)
+#+end_src
+** ace-window
+#+begin_src elisp
+  (use-package ace-window)
+  ;; ace-window
+;; https://github.com/abo-abo/ace-window
+(global-set-key (kbd "C-x o") 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+(setq aw-minibuffer-flag 0)
+
+#+end_src
+** e2wm
+#+begin_src elisp
+  ;;https://github.com/kiwanami/emacs-window-manager
+(use-package e2wm)
+(require 'e2wm)
+(global-set-key (kbd "M-+") 'e2wm:start-management)
+
+#+end_src
+** which-key
+#+begin_src elisp
+  (use-package which-key)
+  (require 'which-key)
+  (which-key-mode)
+  (which-key-setup-side-window-bottom)
+
+#+end_src
+
 * よくわかってないやつ/使うか迷っているやつ
 ** company slime
 #+begin_src elisp
@@ -620,11 +1406,129 @@
   (slime-setup
    '(slime-company)))
 #+end_src
+** imenu-list
+#+begin_src elisp
+  ;; imenu-list
+  ;; https://github.com/bmag/imenu-list
+  (global-set-key (kbd "C-c C-@ o") 'imenu-list-smart-toggle)
+  (setq imenu-list-position 'right)
+
+#+end_src
 ** ace-jump
 #+begin_src elisp
   (leaf ace-jump-mode
   :ensure t
   :bind (("C-c j" . ace-jump-mode)))
+#+end_src
+** calfw
+#+begin_src elisp
+  (require 'calfw)
+  (require 'calfw-org)
+  (setq cfw:org-agenda-schedule-args '(:timestamp))
+  ;; Month
+  (setq calendar-month-name-array
+        ["1月" "2月" "3月" "4月" "5月" "6月" "7月" "8月" "9月" "10月" "11月" "12月"])
+
+  ;; Week days
+  (setq calendar-day-name-array
+        ["日曜日" "月曜日" "火曜日" "水曜日" "木曜日" "金曜日" "土曜日"])
+
+  ;; First day of the week
+  (setq calendar-week-start-day 0) ; 0:Sunday, 1:Monday
+
+#+end_src
+** ditaa
+#+begin_src elisp
+  ;; https://qiita.com/tnoda_/items/e236c019f6ad0903d320
+  (add-to-list 'org-babel-default-header-args:ditaa '(:eps . t))
+
+#+end_src
+** sbcl
+#+begin_src elisp
+  ;; https://lisp-lang.org/learn/getting-started/
+(setq inferior-lisp-program "sbcl")
+#+end_src
+** ewwの画像非表示
+#+begin_src elisp
+  ;; http://emacs.rubikitch.com/eww-image/
+  (defun eww-disable-images ()
+    "ewwで画像表示させない"
+    (interactive)
+    (setq-local shr-put-image-function 'shr-put-image-alt)
+    (eww-reload))
+  (defun eww-enable-images ()
+    "ewwで画像表示させる"
+    (interactive)
+    (setq-local shr-put-image-function 'shr-put-image)
+    (eww-reload))
+  (defun shr-put-image-alt (spec alt &optional flags)
+    (insert alt))
+
+  (provide 'mylisp-eww-image)
+
+  (defun eww-mode-hook--disable-image ()
+    (setq-local shr-put-image-function 'shr-put-image-alt))
+  (add-hook 'eww-mode-hook 'eww-mode-hook--disable-image)
+
+#+end_src
+** dmacro
+#+begin_src elisp
+  (leaf dmacro
+  :ensure t
+  :custom `((dmacro-key . ,(kbd "C-S-e")))
+  :global-minor-mode global-dmacro-mode)
+#+end_src
+
+* 便利な関数
+
+** my-scratch-buffer
+#+begin_src elisp
+  ;; scratch buffer をorg-modeで作成するmy-scratch-buffer
+;; https://emacs.stackexchange.com/questions/16492/is-it-possible-to-create-an-org-mode-scratch-buffer
+;; lawlistさん作
+(defun my-scratch-buffer ()
+"Create a new scratch buffer -- \*hello-world\*"
+(interactive)
+  (let ((n 0)
+        bufname buffer)
+    (catch 'done
+      (while t
+        (setq bufname (concat "*my-scratch-org-mode"
+          (if (= n 0) "" (int-to-string n))
+            "*"))
+        (setq n (1+ n))
+        (when (not (get-buffer bufname))
+          (setq buffer (get-buffer-create bufname))
+          (with-current-buffer buffer
+            (org-mode))
+          ;; When called non-interactively, the `t` targets the other window (if it exists).
+          (throw 'done (display-buffer buffer t)))))))
+#+end_src
+
+** set-alpha
+#+begin_src elisp
+  ;; 透明度を変更するコマンド M-x set-alpha
+  ;; http://qiita.com/marcy@github/items/ba0d018a03381a964f24
+  (defun set-alpha (alpha-num)
+    "set frame parameter 'alpha"
+    (interactive "nAlpha: ")
+    (set-frame-parameter nil 'alpha (cons alpha-num '(90))))
+
+#+end_src
+
+** toggle-transparency
+#+begin_src elisp
+  (defun toggle-transparency ()
+    (interactive)
+    (let ((alpha (frame-parameter nil 'alpha)))
+      (set-frame-parameter
+       nil 'alpha
+       (if (eql (cond ((numberp alpha) alpha)
+                      ((numberp (cdr alpha)) (cdr alpha))
+                      ;; Also handle undocumented (<active> <inactive>) form.
+                      ((numberp (cadr alpha)) (cadr alpha)))
+                100)
+           '(60 . 50) '(100 . 100)))))
 #+end_src
 * end leaf.el
 #+begin_src elisp
