@@ -1125,7 +1125,7 @@
 #+end_src
 ** whitespace
 #+begin_src elisp
-  (leaf whitespace :ensure t :require t)
+  (leaf whitespace :ensure t :require t :config whitespace-mode)
   ;; (use-package whitespace)
   ;; 全角スペースを可視化する（cica - sourcehancodejp のため）
   ;; https://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
