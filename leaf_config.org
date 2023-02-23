@@ -64,73 +64,73 @@
 #+end_src
 * 組み込みの設定
 #+begin_src elisp
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (set-language-environment "Japanese")
-  (prefer-coding-system 'utf-8)
-  (set-default 'buffer-file-coding-system 'utf-8)
-  (setq display-time-24hr-format t)
-  ;; (display-time)
-  (display-battery-mode t)
-  (setq toggle-truncate-line t)
-  ;; 直前/直後の括弧に対応する括弧を光らせます。
-  (show-paren-mode)
-  ;;括弧の自動補完
-  (electric-pair-mode 1)
-  ;; highlight entire bracket expression
-  ;;http://takeisamemo.blogspot.com/2013/07/emacs.html
-  (setq show-paren-style 'expression)
-  ;;カーソルの点滅を消す
-  (blink-cursor-mode 0)
-  ;; echo エリアの表示時間
-  (setq echo-keystrokes 0.1)
-  ;; echo エリアの表示時間
-  (setq echo-keystrokes 0.1)
-  ;; linumよりも早い行数表示
-  ;; https://garaemon.hatenadiary.jp/entry/2018/07/08/181003
-  (leaf leaf-convert
-    :config
-    (global-display-line-numbers-mode)
-    )
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (set-language-environment "Japanese")
+    (prefer-coding-system 'utf-8)
+    (set-default 'buffer-file-coding-system 'utf-8)
+    (setq display-time-24hr-format t)
+    ;; (display-time)
+    (display-battery-mode t)
+    (setq toggle-truncate-line t)
+    ;; 直前/直後の括弧に対応する括弧を光らせます。
+    (show-paren-mode)
+    ;;括弧の自動補完
+    (electric-pair-mode 1)
+    ;; highlight entire bracket expression
+    ;;http://takeisamemo.blogspot.com/2013/07/emacs.html
+    (setq show-paren-style 'expression)
+    ;;カーソルの点滅を消す
+    (blink-cursor-mode 0)
+    ;; echo エリアの表示時間
+    (setq echo-keystrokes 0.1)
+    ;; echo エリアの表示時間
+    (setq echo-keystrokes 0.1)
+    ;; linumよりも早い行数表示
+    ;; https://garaemon.hatenadiary.jp/entry/2018/07/08/181003
+    (leaf leaf-convert
+      :config
+      (global-display-line-numbers-mode)
+      )
 
-  (global-set-key (kbd "C-c t") 'display-line-numbers-mode)
-  (global-set-key (kbd "C-c T") 'toggle-truncate-lines)
-  ;; 直前/直後の括弧に対応する括弧を光らせます。
-  (show-paren-mode)
+    (global-set-key (kbd "C-c t") 'display-line-numbers-mode)
+    (global-set-key (kbd "C-c T") 'toggle-truncate-lines)
+    ;; 直前/直後の括弧に対応する括弧を光らせます。
+    (show-paren-mode)
 
-  ;;括弧の自動補完
-  (electric-pair-mode 1)
+    ;;括弧の自動補完
+    (electric-pair-mode 1)
 
-  ;; highlight entire bracket expression
-  ;;http://takeisamemo.blogspot.com/2013/07/emacs.html
-  (setq show-paren-style 'expression)
+    ;; highlight entire bracket expression
+    ;;http://takeisamemo.blogspot.com/2013/07/emacs.html
+    (setq show-paren-style 'expression)
 
-  ;;カーソルの点滅を消す
-  (blink-cursor-mode 0)
-  ;; emacs の起動画面を消す
-  ;; https://pcvogel.sarakura.net/2013/06/17/31151
-  (setq inhibit-startup-message t)
-  (setq initial-scratch-message nil)
+    ;;カーソルの点滅を消す
+    (blink-cursor-mode 0)
+    ;; emacs の起動画面を消す
+    ;; https://pcvogel.sarakura.net/2013/06/17/31151
+    (setq inhibit-startup-message t)
+    (setq initial-scratch-message nil)
 
-  ;; オートセーブファイルを ~/.emacs.d/backupにつくる
-  (setq auto-save-file-name-transforms
-        `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
+    ;; オートセーブファイルを ~/.emacs.d/backupにつくる
+    (setq auto-save-file-name-transforms
+          `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
-  ;; back up の設定
-  ;;https://teratail.com/questions/175012
-  ;; バックアップファイルを ~/.emacs.d/backupにつくる
-  (setq make-backup-files t)
-  (setq backup-directory-alist
-        (cons (cons "\.*$" (expand-file-name "~/.emacs.d/backup"))
-              backup-directory-alist))
+    ;; back up の設定
+    ;;https://teratail.com/questions/175012
+    ;; バックアップファイルを ~/.emacs.d/backupにつくる
+    (setq make-backup-files t)
+    (setq backup-directory-alist
+          (cons (cons "\.*$" (expand-file-name "~/.emacs.d/backup"))
+                backup-directory-alist))
 
-(setq default-frame-alist (append
-			   (list
-			    ;; '(font . "cica-16")
-                '(font . "SourceHanCodeJP-13")
-                )
-			   default-frame-alist))
+  (setq default-frame-alist (append
+                 (list
+                  '(font . "cica-14")
+                  ;; '(font . "SourceHanCodeJP-13")
+                  )
+                 default-frame-alist))
 
 #+end_src
 * leafで書いてある設定
@@ -144,7 +144,7 @@
 
 ** imenu
 #+begin_src elisp
-  (leaf leaf
+  (leaf imenu-list
   :config
   (leaf leaf-convert :ensure t)
   (leaf leaf-tree
@@ -225,11 +225,13 @@
 
 *** org journal
 #+begin_src elisp
+(leaf org-journal :ensure t :require t)
   (leaf leaf-convert
-    :bind (("l" . org-store-link)
-           ("c" . org-capture)
-           ("a" . org-agenda)
-           ("b" . org-iswitchb))
+    :bind
+    (("l" . org-store-link)
+     ("c" . org-capture)
+     ("a" . org-agenda)
+     ("b" . org-iswitchb))
     :require org-journal)
 
   (global-set-key (kbd "C-c C-j") 'org-journal-new-entry)
@@ -240,12 +242,12 @@
 #+begin_src elisp
   (setq org-agenda-files `(,todofile ))
   ;;https://emacs.stackexchange.com/questions/36307/showing-deadline-time-in-agenda-view
-  (add-to-list 'org-agenda-custom-commands
-               '("d" "Deadlines"
-                 tags "+DEADLINE>=\"<today>\"&DEADLINE<=\"<+2m>\""
-                 ((org-agenda-overriding-columns-format
-                   "%25ITEM %DEADLINE %TAGS")))
-               )
+  ;; (add-to-list 'org-agenda-custom-commands
+  ;;              '("d" "Deadlines"
+  ;;                tags "+DEADLINE>=\"<today>\"&DEADLINE<=\"<+2m>\""
+  ;;                ((org-agenda-overriding-columns-format
+  ;;                  "%25ITEM %DEADLINE %TAGS")))
+  ;;              )
 
 #+end_src
 
@@ -279,250 +281,259 @@
 
 *** org latex
 #+begin_src elisp
-  
-;; latex の設定
-;;https://orgmode.org/worg/org-tutorials/org-latex-preview.html
-;; https://qiita.com/clothoid/items/2614635e243ba6225916
-(setq org-latex-create-formula-image-program 'dvipng)
-(setq org-latex-create-formula-image-program 'imagemagick)
 
-; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
+    ;; latex の設定
+    ;;https://orgmode.org/worg/org-tutorials/org-latex-preview.html
+    ;; https://qiita.com/clothoid/items/2614635e243ba6225916
+    (setq org-latex-create-formula-image-program 'dvipng)
+    (setq org-latex-create-formula-image-program 'imagemagick)
 
-;; PATHを追加
-;; (setenv "PATH"
-;;   (concat
-;;    "C:/texlive/2018/bin/win32;"
-;;    "C:/Users/Administrator/AppData/Local/Programs/Python/Python37/Scripts;"
-;;    (getenv "PATH")))
-;; (setq exec-path (parse-colon-path (getenv "PATH")))
+    ; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
 
-;; babel の中で tab が ^^I に変換されてしまうので、スペースにする
-(setq-default tab-width 4 indent-tabs-mode nil)
+    ;; PATHを追加
+    ;; (setenv "PATH"
+    ;;   (concat
+    ;;    "C:/texlive/2018/bin/win32;"
+    ;;    "C:/Users/Administrator/AppData/Local/Programs/Python/Python37/Scripts;"
+    ;;    (getenv "PATH")))
+    ;; (setq exec-path (parse-colon-path (getenv "PATH")))
 
-(require 'ox-latex)
-(require 'ox-beamer)
-;;; 勝手に入力される \hypersetup{} は使わない(usepackage の順序依存に配慮)
-(setq org-latex-with-hyperref nil)
-(add-to-list 'org-latex-packages-alist "\\hypersetup{setpagesize=false}" t)
-(add-to-list 'org-latex-packages-alist "\\hypersetup{colorlinks=true}" t)
-(add-to-list 'org-latex-packages-alist "\\hypersetup{linkcolor=blue}" t)
+    ;; babel の中で tab が ^^I に変換されてしまうので、スペースにする
+    (setq-default tab-width 4 indent-tabs-mode nil)
 
-(setq org-latex-pdf-process
-      '("platex -shell-escape %f"
-        "platex -shell-escape %f"
-        "pbibtex %b"
-        "platex -shell-escape %f"
-        "platex -shell-escape %f"
-        "dvipdfmx %b.dvi"))
+    (require 'ox-latex)
+    (require 'ox-beamer)
+    ;;; 勝手に入力される \hypersetup{} は使わない(usepackage の順序依存に配慮)
+    (setq org-latex-with-hyperref nil)
+    (add-to-list 'org-latex-packages-alist "\\hypersetup{setpagesize=false}" t)
+    (add-to-list 'org-latex-packages-alist "\\hypersetup{colorlinks=true}" t)
+    (add-to-list 'org-latex-packages-alist "\\hypersetup{linkcolor=blue}" t)
 
-(setq org-latex-title-command "\\maketitle")
-(setq org-latex-toc-command
-      "\\tableofcontents\n")
-(setq org-latex-text-markup-alist '((bold . "\\textbf{%s}")
-                (code . verb)
-                (italic . "\\it{%s}")
-                (strike-through . "\\sout{%s}")
-                (underline . "\\uline{%s}")
-                (verbatim . protectedtexttt)))
-(setq org-beamer-outline-frame-title "目次")
-(setq org-export-latex-listings t)
-(setq org-latex-listings 'minted)
-(setq org-latex-minted-options
-      '(("frame" "lines")
-        ;; ("frame" "single")
-        ;; ("bgcolor=LightGray")
-        ;; latex mintedの背景色をグレーにする
-        ;; #+LATEX_HEADER: \usepackage{minted}
-        ;; #+LATEX_HEADER: \usepackage{xcolor} % to access the named colour LightGray
-        ;; #+LATEX_HEADER: \definecolor{LightGray}{gray}{0.9}
-        ("framesep=2mm")
-        ;; ("framesep=0mm")
-        ("linenos=true")
-        ("baselinestretch=1.2")
-        ("fontsize=\\small")
-        ("breaklines")
-        ))
+    (setq org-latex-pdf-process
+          '("platex -shell-escape %f"
+            "platex -shell-escape %f"
+            "pbibtex %b"
+            "platex -shell-escape %f"
+            "platex -shell-escape %f"
+            "dvipdfmx %b.dvi"))
 
-;; class は自分で再定義
-;; NO-DEFAULT-PACKAGES で勝手に入る package を抑制
-;; (上記のように org-latex-packages-alist で定義すべきかも?)
-(add-to-list 'org-latex-classes
-             '("myjsarticle"
-               "\\documentclass{jsarticle}
-[NO-DEFAULT-PACKAGES]
-\\usepackage[dvipdfmx]{graphicx}
-\\usepackage[dvipdfmx]{color}
-\\usepackage[dvipdfmx]{hyperref}
-\\usepackage{pxjahyper}"
-  ("\\section{%s}" . "\\section*{%s}")
-  ("\\subsection{%s}" . "\\subsection*{%s}")
-  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-  ("\\paragraph{%s}" . "\\paragraph*{%s}")
-  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    (setq org-latex-title-command "\\maketitle")
+    (setq org-latex-toc-command
+          "\\tableofcontents\n")
+    (setq org-latex-text-markup-alist '((bold . "\\textbf{%s}")
+                    (code . verb)
+                    (italic . "\\it{%s}")
+                    (strike-through . "\\sout{%s}")
+                    (underline . "\\uline{%s}")
+                    (verbatim . protectedtexttt)))
+    (setq org-beamer-outline-frame-title "目次")
+    (setq org-export-latex-listings t)
+    (setq org-latex-listings 'minted)
+    (setq org-latex-minted-options
+          '(("frame" "lines")
+            ;; ("frame" "single")
+            ;; ("bgcolor=LightGray")
+            ;; latex mintedの背景色をグレーにする
+            ;; #+LATEX_HEADER: \usepackage{minted}
+            ;; #+LATEX_HEADER: \usepackage{xcolor} % to access the named colour LightGray
+            ;; #+LATEX_HEADER: \definecolor{LightGray}{gray}{0.9}
+            ("framesep=2mm")
+            ;; ("framesep=0mm")
+            ("linenos=true")
+            ("baselinestretch=1.2")
+            ("fontsize=\\small")
+            ("breaklines")
+            ))
 
-(add-to-list 'org-latex-classes
-             '("article"
-               "\\documentclass{jsarticle}
-\\usepackage[dvipdfmx]{graphicx}
-\\usepackage[dvipdfmx]{color}
-\\usepackage[dvipdfmx]{hyperref}
-\\usepackage{amsmath}
-\\usepackage{amsfonts}
-\\usepackage{pxjahyper}
-\\usepackage[utf8]{inputenc}
-\\usepackage{fixltx2e}
-\\usepackage{graphicx}
-\\usepackage{longtable}
-\\usepackage{float}
-\\usepackage{wrapfig}
-\\usepackage{rotating}
-\\usepackage[normalem]{ulem}
-#+LATEX_HEADER: \let\Re\relax
-#+LATEX_HEADER: \DeclareMathOperator{\Re}{Re}
-#+LATEX_HEADER: \let\Im\relax
-#+LATEX_HEADER: \DeclareMathOperator{\Im}{Im}
-\\usepackage{textcomp}
-\\usepackage{marvosym}
-\\usepackage{wasysym}
-\\usepackage{amssymb}
-\\usepackage{hyperref}
-\\usepackage{mathpazo}
-\\usepackage{color}
-\\usepackage{enumerate}
-\\definecolor{bg}{rgb}{0.95,0.95,0.95}
-\\tolerance=1000
-      [NO-DEFAULT-PACKAGES]
-      [PACKAGES]
-      [EXTRA]
-\\linespread{1.1}
-\\hypersetup{pdfborder=0 0 0}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")))
-(add-to-list 'org-latex-classes
-             '("original"
-               "\\documentclass{jsarticle}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")))
-(add-to-list 'org-latex-classes
-             '("my_article2"
-               "\\documentclass[dvipdfmx,11pt]{jsarticle}
-\\usepackage{siunitx}
-\\usepackage{stix2}
-\\usepackage[sb]{libertine}
-\\usepackage[T1]{fontenc}
-\\usepackage[varqu , varl]{zi4}
-\\usepackage{libertinust1math}
-\\usepackage[cal=stix,scr=boondoxo,bb=boondox]{mathalfa}
-\\numberwithin{equation}{section}
-\\usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
-\\usepackage{booktabs}
-\\usepackage{fancyhdr}
-\\usepackage{lastpage}
-\\usepackage[dvipdfmx]{graphicx}
-\\usepackage{subcaption}
-\\usepackage{comment}
-\\usepackage{booktabs}
-\\usepackage{minted}
-;; \\usepackage{xcolor} % to access the named colour LightGray
-;; \\definecolor{LightGray}{gray}{0.9}
+    ;; class は自分で再定義
+    ;; NO-DEFAULT-PACKAGES で勝手に入る package を抑制
+    ;; (上記のように org-latex-packages-alist で定義すべきかも?)
+    (add-to-list 'org-latex-classes
+                 '("myjsarticle"
+                   "\\documentclass{jsarticle}
+    [NO-DEFAULT-PACKAGES]
+    \\usepackage[dvipdfmx]{graphicx}
+    \\usepackage[dvipdfmx]{color}
+    \\usepackage[dvipdfmx]{hyperref}
+    \\usepackage{pxjahyper}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-\\fancypagestyle{mypagestyle}{
-\\lhead{}
-\\rhead{}
-\\cfoot{}
-\\rfoot{\\thepage/\\pageref{LastPage}}
-\\renewcommand{\\headrulewidth}{0.0pt}
-}
-\\setcounter{page}{0}
+    (add-to-list 'org-latex-classes
+                 '("article"
+                   "\\documentclass{jsarticle}
+    \\usepackage[dvipdfmx]{graphicx}
+    \\usepackage[dvipdfmx]{color}
+    \\usepackage[dvipdfmx]{hyperref}
+    \\usepackage{amsmath}
+    \\usepackage{amsfonts}
+    \\usepackage{pxjahyper}
+    \\usepackage[utf8]{inputenc}
+    \\usepackage{fixltx2e}
+    \\usepackage{graphicx}
+    \\usepackage{longtable}
+    \\usepackage{float}
+    \\usepackage{wrapfig}
+    \\usepackage{rotating}
+    \\usepackage[normalem]{ulem}
+    ,#+LATEX_HEADER: \let\Re\relax
+    ,#+LATEX_HEADER: \DeclareMathOperator{\Re}{Re}
+    ,#+LATEX_HEADER: \let\Im\relax
+    ,#+LATEX_HEADER: \DeclareMathOperator{\Im}{Im}
+    \\usepackage{textcomp}
+    \\usepackage{marvosym}
+    \\usepackage{wasysym}
+    \\usepackage{amssymb}
+    \\usepackage{hyperref}
+    \\usepackage{mathpazo}
+    \\usepackage{color}
+    \\usepackage{enumerate}
+    \\definecolor{bg}{rgb}{0.95,0.95,0.95}
+    \\tolerance=1000
+          [NO-DEFAULT-PACKAGES]
+          [PACKAGES]
+          [EXTRA]
+    \\linespread{1.1}
+    \\hypersetup{pdfborder=0 0 0}"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")))
+    (add-to-list 'org-latex-classes
+                 '("original"
+                   "\\documentclass{jsarticle}"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")))
+    (add-to-list 'org-latex-classes
+                 '("my_article2"
+                   "\\documentclass[dvipdfmx,11pt]{jsarticle}
+    \\usepackage{siunitx}
+    \\usepackage{stix2}
+    \\usepackage[sb]{libertine}
+    \\usepackage[T1]{fontenc}
+    \\usepackage[varqu , varl]{zi4}
+    \\usepackage{libertinust1math}
+    \\usepackage[cal=stix,scr=boondoxo,bb=boondox]{mathalfa}
+    \\numberwithin{equation}{section}
+    \\usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
+    \\usepackage{booktabs}
+    \\usepackage{fancyhdr}
+    \\usepackage{lastpage}
+    \\usepackage[dvipdfmx]{graphicx}
+    \\usepackage{subcaption}
+    \\usepackage{comment}
+    \\usepackage{booktabs}
+    \\usepackage{minted}
+    ;; \\usepackage{xcolor} % to access the named colour LightGray
+    ;; \\definecolor{LightGray}{gray}{0.9}
 
-\\makeatletter
-	\\renewcommand{\\theequation}{
-	\\thesection.\\arabic{equation}}
-	\\@addtoreset{equation}{section}
+    \\fancypagestyle{mypagestyle}{
+    \\lhead{}
+    \\rhead{}
+    \\cfoot{}
+    \\rfoot{\\thepage/\\pageref{LastPage}}
+    \\renewcommand{\\headrulewidth}{0.0pt}
+    }
+    \\setcounter{page}{0}
 
-	\\renewcommand{\\thefigure}{
-	\\thesection.\\arabic{figure}}
-	\\@addtoreset{figure}{section}
+    \\makeatletter
+        \\renewcommand{\\theequation}{
+        \\thesection.\\arabic{equation}}
+        \\@addtoreset{equation}{section}
 
-	\\renewcommand{\\thetable}{
-	\\thesection.\\arabic{table}}
-	\\@addtoreset{table}{section}
-\\makeatother
-\\setcounter{tocdepth}{3}
-"))
-(add-to-list 'org-latex-classes
-             '(
-               "koma-jarticle"
-               "\\documentclass[12pt]{scrartcl}
-                [NO-DEFAULT-PACKAGES]
-                \\usepackage{amsmath}
-                \\usepackage{amssymb}
-                \\usepackage{mathrsfs}
-                \\usepackage{xunicode}
-                \\usepackage{fixltx2e}
-                \\usepackage{zxjatype}
-                \\usepackage[ipa]{zxjafont}
-                \\usepackage{xltxtra}
-                \\usepackage{graphicx}
-                \\usepackage{longtable}
-                \\usepackage{float}
-                \\usepackage{wrapfig}
-                \\usepackage{soul}
-                \\usepackage[xetex]{hyperref}
-                \\usepackage{xcolor}
-                \\usepackage{minted}
-                \\usepackage{geometry}
-                \\geometry{left=1cm,right=1cm,top=1cm,bottom=1cm}
-                \\usepackage[natbib=true]{biblatex}
-                \\DeclareFieldFormat{apacase}{#1}
-                \\addbibresource{~/myspace/Bibliography/references.bib}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+        \\renewcommand{\\thefigure}{
+        \\thesection.\\arabic{figure}}
+        \\@addtoreset{figure}{section}
+
+        \\renewcommand{\\thetable}{
+        \\thesection.\\arabic{table}}
+        \\@addtoreset{table}{section}
+    \\makeatother
+    \\setcounter{tocdepth}{3}
+    "))
+    (add-to-list 'org-latex-classes
+                 '(
+                   "koma-jarticle"
+                   "\\documentclass[12pt]{scrartcl}
+                    [NO-DEFAULT-PACKAGES]
+                    \\usepackage{amsmath}
+                    \\usepackage{amssymb}
+                    \\usepackage{mathrsfs}
+                    \\usepackage{xunicode}
+                    \\usepackage{fixltx2e}
+                    \\usepackage{zxjatype}
+                    \\usepackage[ipa]{zxjafont}
+                    \\usepackage{xltxtra}
+                    \\usepackage{graphicx}
+                    \\usepackage{longtable}
+                    \\usepackage{float}
+                    \\usepackage{wrapfig}
+                    \\usepackage{soul}
+                    \\usepackage[xetex]{hyperref}
+                    \\usepackage{xcolor}
+                    \\usepackage{minted}
+                    \\usepackage{geometry}
+                    \\geometry{left=1cm,right=1cm,top=1cm,bottom=1cm}
+                    \\usepackage[natbib=true]{biblatex}
+                    \\DeclareFieldFormat{apacase}{#1}
+                    \\addbibresource{~/myspace/Bibliography/references.bib}"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
 
-;;https://orgmode.org/worg/org-tutorials/org-latex-preview.html
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+    ;;https://orgmode.org/worg/org-tutorials/org-latex-preview.html
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
-;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-LaTeX.html
-(setq exec-path (append exec-path '("/Library/TeX/texbin")))
-(load "auctex.el" nil t t)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-;; (org-babel-do-load-languages
-;;  'org-babel-load-languages
-;;  '((latex . t)))
+    ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-LaTeX.html
+    (setq exec-path (append exec-path '("/Library/TeX/texbin")))
+  ;; 2023/02/23コメントアウト
+    ;; (leaf auctex :ensure t :require t)
+    ;; (load "auctex.el" nil t t)
+    ;; (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 
-;; latex mintedの背景色をグレーにする
-;; #+LATEX_HEADER: \usepackage{minted}
-;; #+LATEX_HEADER: \usepackage{xcolor} % to access the named colour LightGray
-;; #+LATEX_HEADER: \definecolor{LightGray}{gray}{0.9}
-;; (setq org-latex-listings 'minted)
-;; (setq org-latex-minted-options
-;;       '(("frame" "single") ("linenos=true")("bgcolor=LightGray")))
+  ;; (org-babel-do-load-languages
+    ;;  'org-babel-load-languages
+    ;;  '((latex . t)))
+
+    ;; latex mintedの背景色をグレーにする
+    ;; #+LATEX_HEADER: \usepackage{minted}
+    ;; #+LATEX_HEADER: \usepackage{xcolor} % to access the named colour LightGray
+    ;; #+LATEX_HEADER: \definecolor{LightGray}{gray}{0.9}
+    ;; (setq org-latex-listings 'minted)
+    ;; (setq org-latex-minted-options
+    ;;       '(("frame" "single") ("linenos=true")("bgcolor=LightGray")))
 
 #+end_src
 
 ** undo-tree
 #+begin_src elisp
-    (leaf undo-tree
-      :global-minor-mode global-undo-tree-mode)
-    ;;undo-treeでlinum-modeの設定
-  ;;https://www.emacswiki.org/emacs/UndoTree
-  (defun undo-tree-visualizer-update-linum (&rest args)(linum-update undo-tree-visualizer-parent-buffer)(advice-add 'undo-tree-visualize-undo :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualize-redo :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualize-undo-to-x :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualize-redo-to-x :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualizer-mouse-set :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualizer-set :after #'undo-tree-visualizer-update-linum))
-;; undo-treeの一時ファイルを1箇所に集める
-;; https://www.reddit.com/r/emacs/comments/tejte0/undotree_bug_undotree_files_scattering_everywhere/
-;; Prevent undo tree files from polluting your git repo
-(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+              (leaf undo-tree
+          :ensure t :require t
+                :global-minor-mode global-undo-tree-mode)
+              ;;undo-treeでlinum-modeの設定
+            ;;https://www.emacswiki.org/emacs/UndoTree
+            (defun undo-tree-visualizer-update-linum (&rest args)
+        (linum-update undo-tree-visualizer-parent-buffer)
+      (advice-add 'undo-tree-visualize-undo
+    :after #'undo-tree-visualizer-update-linum)
+  (advice-add 'undo-tree-visualize-redo :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualize-undo-to-x :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualize-redo-to-x :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualizer-mouse-set :after #'undo-tree-visualizer-update-linum)(advice-add 'undo-tree-visualizer-set :after #'undo-tree-visualizer-update-linum))
+          ;; undo-treeの一時ファイルを1箇所に集める
+          ;; https://www.reddit.com/r/emacs/comments/tejte0/undotree_bug_undotree_files_scattering_everywhere/
+          ;; Prevent undo tree files from polluting your git repo
+          (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 #+end_src
 
 ** counsel,ivy
 #+begin_src elisp
+  (leaf counsel :ensure t :require t)
   (leaf leaf-convert
   :bind (("" . swiper)
      ("M-x" . counsel-M-x)
@@ -548,6 +559,7 @@
 ** beacon
 #+begin_src elisp
   (leaf beacon
+  :ensure t
     :doc "カーソルを移動した際に点滅される"
     :url "https://github.com/Malabarba/beacon"
   :init
@@ -566,175 +578,175 @@
 ** end-mark
 
 #+begin_src elisp
-  ;;; end-mark.el --- Show mark at the end of buffer
+   ;;; end-mark.el --- Show mark at the end of buffer
 
-;; Author: INA Lintaro <ina@kuis.kyoto-u.ac.jp>
+  ;; Author: INA Lintaro <ina@kuis.kyoto-u.ac.jp>
 
-;;; License:
+  ;;; License:
 
-;; NYSL Version 0.9982 (en)
-;; ----------------------------------------
-;; A. This software is "Everyone'sWare". It means:
-;;   Anybody who has this software can use it as if you're
-;;   the author.
-;;
-;;   A-1. Freeware. No fee is required.
-;;   A-2. You can freely redistribute this software.
-;;   A-3. You can freely modify this software. And the source
-;;       may be used in any software with no limitation.
-;;   A-4. When you release a modified version to public, you
-;;       must publish it with your name.
-;;
-;; B. The author is not responsible for any kind of damages or loss
-;;   while using or misusing this software, which is distributed
-;;   "AS IS". No warranty of any kind is expressed or implied.
-;;   You use AT YOUR OWN RISK.
-;;
-;; C. Copyrighted to INA Lintaro
-;;
-;; D. Above three clauses are applied both to source and binary
-;;   form of this software.
+  ;; NYSL Version 0.9982 (en)
+  ;; ----------------------------------------
+  ;; A. This software is "Everyone'sWare". It means:
+  ;;   Anybody who has this software can use it as if you're
+  ;;   the author.
+  ;;
+  ;;   A-1. Freeware. No fee is required.
+  ;;   A-2. You can freely redistribute this software.
+  ;;   A-3. You can freely modify this software. And the source
+  ;;       may be used in any software with no limitation.
+  ;;   A-4. When you release a modified version to public, you
+  ;;       must publish it with your name.
+  ;;
+  ;; B. The author is not responsible for any kind of damages or loss
+  ;;   while using or misusing this software, which is distributed
+  ;;   "AS IS". No warranty of any kind is expressed or implied.
+  ;;   You use AT YOUR OWN RISK.
+  ;;
+  ;; C. Copyrighted to INA Lintaro
+  ;;
+  ;; D. Above three clauses are applied both to source and binary
+  ;;   form of this software.
 
-;;; Commentary:
+  ;;; Commentary:
 
-;; Show mark at the end of buffer.
-;;
-;; To use this mode, copy end-mark.el to your load path
-;; and add to your .emacs:
-;;
-;;   (require 'end-mark)
-;;
-;; Then M-x end-mark-on enables end-mark-mode in the current buffer.
-;;
-;; To automatically enable end-mark-mode in every buffers, add to your .emacs:
-;;
-;;   (global-end-mark-mode)
+  ;; Show mark at the end of buffer.
+  ;;
+  ;; To use this mode, copy end-mark.el to your load path
+  ;; and add to your .emacs:
+  ;;
+  ;;   (require 'end-mark)
+  ;;
+  ;; Then M-x end-mark-on enables end-mark-mode in the current buffer.
+  ;;
+  ;; To automatically enable end-mark-mode in every buffers, add to your .emacs:
+  ;;
+  ;;   (global-end-mark-mode)
 
-;;; Code:
+  ;;; Code:
 
-(defconst end-mark-version "0.01")
+  (defconst end-mark-version "0.01")
 
-(defgroup end-mark nil
-  "Show mark at the end of buffer"
-  :group 'convenience)
+  (defgroup end-mark nil
+    "Show mark at the end of buffer"
+    :group 'convenience)
 
-(defcustom end-mark-string "[EOF]"
-  "String used to indicate the end of buffer."
-  :group 'end-mark
-  :type 'string)
+  (defcustom end-mark-string "[EOF]"
+    "String used to indicate the end of buffer."
+    :group 'end-mark
+    :type 'string)
 
-(defface end-mark-face
-  '((((class color) (min-colors 88) (background dark))
-     :foreground "seagreen1")
-    (((class color) (min-colors 88) (background light))
-     :foreground "seagreen3")
-    (((class color) (min-colors 16))
-     :foreground "brightgreen")
-    (((class color) (min-colors 8))
-     :background "green" :foreground "white")
-    (((type tty) (class mono))
-     :inverse-video t)
-    (t :background "gray"))
-  "Face of the end mark."
-  :group 'end-mark)
+  (defface end-mark-face
+    '((((class color) (min-colors 88) (background dark))
+       :foreground "seagreen1")
+      (((class color) (min-colors 88) (background light))
+       :foreground "seagreen3")
+      (((class color) (min-colors 16))
+       :foreground "brightgreen")
+      (((class color) (min-colors 8))
+       :background "green" :foreground "white")
+      (((type tty) (class mono))
+       :inverse-video t)
+      (t :background "gray"))
+    "Face of the end mark."
+    :group 'end-mark)
 
-(defcustom end-mark-face 'end-mark-face
-  "Face of the end mark."
-  :group 'end-mark
-  :type 'face)
+  (defcustom end-mark-face 'end-mark-face
+    "Face of the end mark."
+    :group 'end-mark
+    :type 'face)
 
-(defcustom end-mark-exclude-modes '(dired-mode hexl-mode term-mode)
-  "List of major mode symbols not to enable end-mark-mode automatically."
-  :group 'end-mark
-  :type '(repeat (symbol :tag "Major Mode")))
+  (defcustom end-mark-exclude-modes '(dired-mode hexl-mode term-mode)
+    "List of major mode symbols not to enable end-mark-mode automatically."
+    :group 'end-mark
+    :type '(repeat (symbol :tag "Major Mode")))
 
-(defcustom end-mark-mode-buffers-regexp '("^\\*scratch\\*$")
-  "List of regular expressions of buffer names to enable end-mark-mode automatically."
-  :group 'end-mark
-  :type '(repeat 'string))
+  (defcustom end-mark-mode-buffers-regexp '("^\\*scratch\\*$")
+    "List of regular expressions of buffer names to enable end-mark-mode automatically."
+    :group 'end-mark
+    :type '(repeat 'string))
 
-(defcustom end-mark-exclude-buffers-regexp '("^ .*" "^\\*")
-  "List of regular expressions of buffer names not to enable end-mark-mode automatically."
-  :group 'end-mark
-  :type '(repeat 'string))
+  (defcustom end-mark-exclude-buffers-regexp '("^ .*" "^\\*")
+    "List of regular expressions of buffer names not to enable end-mark-mode automatically."
+    :group 'end-mark
+    :type '(repeat 'string))
 
-(defvar end-mark-overlay nil)
-(make-variable-buffer-local 'end-mark-overlay)
+  (defvar end-mark-overlay nil)
+  (make-variable-buffer-local 'end-mark-overlay)
 
-(defun end-mark-overlay-p () end-mark-overlay)
+  (defun end-mark-overlay-p () end-mark-overlay)
 
-(defun end-mark-adjust ()
-  (interactive)
-  (when (end-mark-overlay-p)
-    (move-overlay end-mark-overlay (point-max) (point-max))))
-
-;;;###autoload
-(define-minor-mode end-mark-mode
-  "Toggle display of mark at the end of buffer."
-  :lighter ""                           ; for desktop.el
-  (if end-mark-mode
-    (progn
-      ;; destructor
-      (make-local-variable 'change-major-mode-hook)
-      (add-hook 'change-major-mode-hook 'end-mark-off)
-      ;; end mark object
-      (unless (end-mark-overlay-p)
-        (setq end-mark-overlay (make-overlay (point-max) (point-max))))
-      ;; overlay face
-      (set-text-properties 0 (length end-mark-string)
-                           `(face ,end-mark-face) end-mark-string)
-      (overlay-put end-mark-overlay 'after-string end-mark-string)
-      ;; auto adjust
-      (overlay-put end-mark-overlay 'insert-behind-hooks
-                   '((lambda (overlay after beg end &optional len)
-                       (when after (end-mark-adjust))))))
+  (defun end-mark-adjust ()
+    (interactive)
     (when (end-mark-overlay-p)
-      (delete-overlay end-mark-overlay)
-      (setq end-mark-overlay nil))
-    (remove-hook 'change-major-mode-hook 'end-mark-off t)))
+      (move-overlay end-mark-overlay (point-max) (point-max))))
 
-;;;###autoload
-(define-globalized-minor-mode
-  global-end-mark-mode end-mark-mode end-mark-install)
+  ;;;###autoload
+  (define-minor-mode end-mark-mode
+    "Toggle display of mark at the end of buffer."
+    :lighter ""                           ; for desktop.el
+    (if end-mark-mode
+      (progn
+        ;; destructor
+        (make-local-variable 'change-major-mode-hook)
+        (add-hook 'change-major-mode-hook 'end-mark-off)
+        ;; end mark object
+        (unless (end-mark-overlay-p)
+          (setq end-mark-overlay (make-overlay (point-max) (point-max))))
+        ;; overlay face
+        (set-text-properties 0 (length end-mark-string)
+                             `(face ,end-mark-face) end-mark-string)
+        (overlay-put end-mark-overlay 'after-string end-mark-string)
+        ;; auto adjust
+        (overlay-put end-mark-overlay 'insert-behind-hooks
+                     '((lambda (overlay after beg end &optional len)
+                         (when after (end-mark-adjust))))))
+      (when (end-mark-overlay-p)
+        (delete-overlay end-mark-overlay)
+        (setq end-mark-overlay nil))
+      (remove-hook 'change-major-mode-hook 'end-mark-off t)))
 
-(defun end-mark-off ()
-  (interactive)
-  (end-mark-mode 0))
+  ;;;###autoload
+  (define-globalized-minor-mode
+    global-end-mark-mode end-mark-mode end-mark-install)
 
-(defun end-mark-on ()
-  (interactive)
-  (end-mark-mode 1))
+  (defun end-mark-off ()
+    (interactive)
+    (end-mark-mode 0))
 
-;;; adjust when inserting file
-(add-hook 'after-insert-file-functions
-          '(lambda (count) (end-mark-adjust) count))
+  (defun end-mark-on ()
+    (interactive)
+    (end-mark-mode 1))
 
-;;; install
-(defun end-mark-install ()
-  (let ((buf (buffer-name (current-buffer)))
-        (mem-pat
-         '(lambda (x l)
-            (member t (mapcar '(lambda (r) (when (string-match r x) t)) l)))))
-    (when (and (not (minibufferp))
-               (not (buffer-base-buffer))
-               (or (funcall mem-pat buf end-mark-mode-buffers-regexp)
-                   (not (funcall mem-pat buf end-mark-exclude-buffers-regexp)))
-               (null (memq major-mode end-mark-exclude-modes)))
-      (end-mark-on))))
+  ;;; adjust when inserting file
+  (add-hook 'after-insert-file-functions
+            '(lambda (count) (end-mark-adjust) count))
 
-(provide 'end-mark)
-;;; end-mark.el ends here
-(leaf leaf-convert
-  :hook ((org-mode-hook . end-mark-off))
-  :require end-mark
-  :config
-  (global-end-mark-mode))
+  ;;; install
+  (defun end-mark-install ()
+    (let ((buf (buffer-name (current-buffer)))
+          (mem-pat
+           '(lambda (x l)
+              (member t (mapcar '(lambda (r) (when (string-match r x) t)) l)))))
+      (when (and (not (minibufferp))
+                 (not (buffer-base-buffer))
+                 (or (funcall mem-pat buf end-mark-mode-buffers-regexp)
+                     (not (funcall mem-pat buf end-mark-exclude-buffers-regexp)))
+                 (null (memq major-mode end-mark-exclude-modes)))
+        (end-mark-on))))
+
+  (provide 'end-mark)
+  ;;; end-mark.el ends here
+  (leaf leaf-convert
+    :hook ((org-mode-hook . end-mark-off))
+    :require end-mark
+    :config
+    (global-end-mark-mode))
 #+end_src
 
 ** reinbow-delimeters
 #+begin_src elisp
   ;;rainbow-delimeter
-
+  (leaf rainbow-delimiters :ensure t :require t)
   ;;https://github.com/Fanael/rainbow-delimiters
   ;;customization
   ;;M-x customize-group rainbow-delimiters
@@ -792,19 +804,22 @@
 
 ** flycheck
 #+begin_src elisp
-  (leaf flycheck
-  :doc "On-the-fly syntax checking"
-  :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
-  :tag "minor-mode" "tools" "languages" "convenience" "emacs>=24.3"
-  :url "http://www.flycheck.org"
-  :ensure t
-  :bind (("M-n" . flycheck-next-error)
-         ("M-p" . flycheck-previous-error))
-  :global-minor-mode global-flycheck-mode)
+    (leaf flycheck
+    :doc "On-the-fly syntax checking"
+    :req "dash-2.12.1" "pkg-info-0.4" "let-alist-1.0.4" "seq-1.11" "emacs-24.3"
+    :tag "minor-mode" "tools" "languages" "convenience" "emacs>=24.3"
+    :url "http://www.flycheck.org"
+    :ensure t
+    :bind (("M-n" . flycheck-next-error)
+           ("M-p" . flycheck-previous-error))
+    :global-minor-mode global-flycheck-mode
+    :require t
+    )
 #+end_src
 
 ** dashboard
 #+begin_src elisp
+  (leaf dashboard :ensure t :require t)
   (leaf leaf-convert
     :setq ((dashboard-items quote
                             ((recents . 10)
@@ -832,7 +847,7 @@
     ;; latexのbibtexの設定
   ;; reftex
   ;; https://taipapamotohus.com/post/org-mode_paper_3/
-  (leaf reftex)
+  (leaf reftex :ensure t :require t)
   (defun org-mode-reftex-setup ()
     (load-library "reftex")
     (and (buffer-file-name)
@@ -841,9 +856,7 @@
     (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
     )
   (add-hook 'org-mode-hook 'org-mode-reftex-setup)
-
-  (leaf leaf-convert
-    :require org ox-bibtex)
+  (leaf bibtex :ensure t :require t)
 
   ;; So that RefTeX finds my bibliography
   ;; (setq reftex-default-bibliography "/home/kawane/デスクトップ/研究/bibfile/")
@@ -855,8 +868,7 @@
   ;; deepl
   ;; https://hangstuck.com/emacs-deepl/
   ;; your languages pair used to translate
-  (leaf leaf-convert
-    :require go-translate)
+  (leaf go-translate :ensure t :require t)
 
   ;; your languages pair used to translate
   (setq gts-translate-list '(("en" "ja") ("ja" "en")))
@@ -910,9 +922,7 @@
 #+begin_src elisp
   ;; org-modeで画像のコピペ
   ;;https://github.com/abo-abo/org-download
-
-  (leaf leaf-convert
-    :require org-download)
+  (leaf org-download :ensure t :require t)
   ;; Drag-and-drop to `dired`
   (leaf leaf-convert
     :hook ((org-mode-hook . org-download-enable)))
@@ -938,7 +948,7 @@
       ;; 起動時に最小化する
       (add-hook 'after-init-hook 'iconify-emacs-when-server-is-done)
       ;; 終了時にyes/noの問い合わせ
-      (setq confirm-kill-emacs 'y-or-n-p)
+      ;; (setq confirm-kill-emacs 'y-or-n-p)
       )
     )
 
@@ -946,13 +956,14 @@
 
 #+end_src
 
+#+RESULTS:
+: ((fullscreen . maximized) (font . SourceHanCodeJP-14) (font . SourceHanCodeJP-14) (vertical-scroll-bars))
+
 ** projectile
 #+begin_src elisp
   ;; https://docs.projectile.mx/projectile/installation.html
-(leaf leaf-convert
-  :require projectile)
+(leaf projectile :ensure t :require t)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(projectile-mode +1)
 (setq projectile-project-search-path '( ("~/work" . 1)))
 (setq projectile-completion-system 'ivy)
 
@@ -1081,7 +1092,7 @@
 
 ** magit
 #+begin_src elisp
-  (leaf magit)
+  (leaf magit :ensure t :require t)
   (global-set-key (kbd "C-x g") 'magit-status)
 #+end_src
 
@@ -1098,26 +1109,20 @@
 
 
 #+end_src
-
-* use-package(require)で書いてある設定
-#+begin_src elisp
-  (require 'use-package) 
-(use-package all-the-icons
-  :if (display-graphic-p))
-
-#+end_src
 ** theme
 *** modus
 #+begin_src elisp
-  (use-package modus-themes)
-  (load-theme 'modus-vivendi-tinted t)
+  (leaf modus-themes :ensure t :require t :config   (load-theme 'modus-vivendi-tinted t))
+  ;; (use-package modus-themes)
+  ;; (load-theme 'modus-vivendi-tinted t)
 #+end_src
 ** whitespace
 #+begin_src elisp
-  (use-package whitespace)
-  ;; 全角スペースを可視化する（cica -> sourcehancodejp のため）
+  (leaf whitespace :ensure t :require t)
+  ;; (use-package whitespace)
+  ;; 全角スペースを可視化する（cica - sourcehancodejp のため）
   ;; https://qiita.com/itiut@github/items/4d74da2412a29ef59c3a
-  (require 'whitespace)
+  ;; (require 'whitespace)
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
                            tabs           ; タブ
@@ -1166,57 +1171,79 @@
 #+begin_src elisp
     ;; einの設定
   ;; https://tam5917.hatenablog.com/entry/2021/03/28/204747
-      (use-package ein)
-    (use-package ein-notebook)
-    (use-package ein-notebooklist)
-    (use-package ein-markdown-mode)
-    (use-package smartrep)
-  (eval-when-compile
-    (require 'ein)
-    (require 'ein-notebook)
-    (require 'ein-notebooklist)
-    (require 'ein-markdown-mode)
-    (require 'smartrep))
+  ;; (use-package ein)
+  ;; (use-package ein-notebook)
+  ;; (use-package ein-notebooklist)
+  ;; (use-package ein-markdown-mode)
+  ;; (use-package smartrep)
+  ;; (eval-when-compile
+  ;;   (require 'ein)
+  ;;   (require 'ein-notebook)
+  ;;   (require 'ein-notebooklist)
+  ;;   (require 'ein-markdown-mode)
+  ;;   (require 'smartrep))
 
-  (add-hook 'ein:notebook-mode-hook 'electric-pair-mode) ;; お好みで
-  (add-hook 'ein:notebook-mode-hook 'undo-tree-mode) ;; お好みで
+  ;; (leaf ein
+  ;;   :ensure t
+  ;;   :require t)
 
-  ;; undoを有効化 (customizeから設定しておいたほうが良さげ)
-  (setq ein:worksheet-enable-undo t)
+  ;; (leaf ein-notebook
+  ;;   :ensure t
+  ;;   :require t)
 
-  ;; 画像をインライン表示 (customizeから設定しておいたほうが良さげ)
-  (setq ein:output-area-inlined-images t)
+  ;; (leaf ein-notebooklist
+  ;;   :ensure t
+  ;;   :require t)
 
-  ;; markdownパーサー
-  ;; M-x ein:markdown →HTMLに翻訳した結果を*markdown-output*バッファに出力
-  (require 'ein-markdown-mode)
+  ;; (leaf ein-markdown-mode
+  ;;   :ensure t
+  ;;   :require t)
 
-  ;; pandocと markdownコマンドは入れておく
-  ;; brew install pandoc
-  ;; brew install markdown
-  (setq ein:markdown-command "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
+  ;; (leaf smartrep
+  ;;   :ensure t
+  ;;   :require t)
 
-  ;; markdownをhtmlに出力してブラウザでプレビュー
-  (defun ein:markdown-preview ()
-    (interactive)
-    (ein:markdown-standalone)
-    (browse-url-of-buffer ein:markdown-output-buffer-name))
 
-  ;; smartrepを入れておく。
-  ;; C-c C-n C-n C-n ... で下のセルに連続で移動、
-  ;; その途中でC-p C-p C-pで上のセルに連続で移動など
-  ;; セル間の移動がスムーズになってとても便利
-  (declare-function smartrep-define-key "smartrep")
-  (with-eval-after-load "ein-notebook"
-    (smartrep-define-key ein:notebook-mode-map "C-c"
-      '(("C-n" . 'ein:worksheet-goto-next-input-km)
-        ("C-p" . 'ein:worksheet-goto-prev-input-km))))
+  ;; (add-hook 'ein:notebook-mode-hook 'electric-pair-mode) ;; お好みで
+  ;; (add-hook 'ein:notebook-mode-hook 'undo-tree-mode) ;; お好みで
+
+  ;; ;; undoを有効化 (customizeから設定しておいたほうが良さげ)
+  ;; (setq ein:worksheet-enable-undo t)
+
+  ;; ;; 画像をインライン表示 (customizeから設定しておいたほうが良さげ)
+  ;; (setq ein:output-area-inlined-images t)
+
+  ;; ;; markdownパーサー
+  ;; ;; M-x ein:markdown →HTMLに翻訳した結果を*markdown-output*バッファに出力
+  ;; (require 'ein-markdown-mode)
+
+  ;; ;; pandocと markdownコマンドは入れておく
+  ;; ;; brew install pandoc
+  ;; ;; brew install markdown
+  ;; (setq ein:markdown-command "pandoc --metadata pagetitle=\"markdown preview\" -f markdown -c ~/.pandoc/github-markdown.css -s --self-contained --mathjax=https://raw.githubusercontent.com/ustasb/dotfiles/b54b8f502eb94d6146c2a02bfc62ebda72b91035/pandoc/mathjax.js")
+
+  ;; ;; markdownをhtmlに出力してブラウザでプレビュー
+  ;; (defun ein:markdown-preview ()
+  ;;   (interactive)
+  ;;   (ein:markdown-standalone)
+  ;;   (browse-url-of-buffer ein:markdown-output-buffer-name))
+
+  ;; ;; smartrepを入れておく。
+  ;; ;; C-c C-n C-n C-n ... で下のセルに連続で移動、
+  ;; ;; その途中でC-p C-p C-pで上のセルに連続で移動など
+  ;; ;; セル間の移動がスムーズになってとても便利
+  ;; (declare-function smartrep-define-key "smartrep")
+  ;; (with-eval-after-load "ein-notebook"
+  ;;   (smartrep-define-key ein:notebook-mode-map "C-c"
+  ;;     '(("C-n" . 'ein:worksheet-goto-next-input-km)
+  ;;       ("C-p" . 'ein:worksheet-goto-prev-input-km))))
 
 #+end_src
 ** pdf-tools
 #+begin_src elisp
     ;; pdf-tools
   ;; https://github.com/vedang/pdf-tools
+  (leaf pdf-tools :ensure t :require t :config (pdf-tools-install))
   (use-package pdf-tools)
   (pdf-tools-install)  ; Standard activation command
   ;; (setq pdf-view-midnight-colors '("#a9b1d6" . "#1a1b26"))
@@ -1225,6 +1252,17 @@
 #+end_src
 ** git-gutter
 #+begin_src elisp
+  ;; (leaf git-gutter :ensure t
+  ;;   :custom
+  ;;   (git-gutter:modified-sign "~")
+  ;;   (git-gutter:added-sign    "+")
+  ;;   (git-gutter:deleted-sign  "-")
+  ;; :custom-face
+  ;; (git-gutter:modified ((t (:background "#f1fa8c"))))
+  ;; (git-gutter:added    ((t (:background "#50fa7b"))))
+  ;; (git-gutter:deleted  ((t (:background "#ff79c6"))))
+  ;; :config
+  ;; (global-git-gutter-mode +1))
   (use-package git-gutter
     :custom
     (git-gutter:modified-sign "~")
@@ -1239,9 +1277,10 @@
 #+end_src
 ** minimap
 #+begin_src elisp
-  (use-package minimap)
+  (leaf minimap :ensure t :require t)
+  ;; (use-package minimap)
   ;; https://hohei3108.hatenablog.com/entry/2018/02/13/165957
-  (require 'minimap)
+  ;; (require 'minimap)
   ;; (minimap-mode 1); 常に有効にする
   (setq minimap-window-location 'right); windowの位置
   (setq minimap-update-delay 0.2); 表示を更新する時間
@@ -1263,21 +1302,23 @@
 #+end_src
 ** doom-modeline
 #+begin_src elisp
-  (use-package doom-modeline)
-(require 'doom-modeline)
-  ;; Whether display the modal state.
-  ;; Including `evil', `overwrite', `god', `ryo' and `xah-fly-keys', etc.
-  (setq doom-modeline-modal t)
+  (leaf doom-modeline  :ensure t :require t :config doom-modeline-mode)
+  ;;   (use-package doom-modeline)
+  ;; (require 'doom-modeline)
+    ;; Whether display the modal state.
+    ;; Including `evil', `overwrite', `god', `ryo' and `xah-fly-keys', etc.
+    (setq doom-modeline-modal t)
 
-  ;; Whether display the modal state icon.
-  ;; Including `evil', `overwrite', `god', `ryo' and `xah-fly-keys', etc.
-  (setq doom-modeline-modal-icon nil)
+    ;; Whether display the modal state icon.
+    ;; Including `evil', `overwrite', `god', `ryo' and `xah-fly-keys', etc.
+    (setq doom-modeline-modal-icon nil)
 
-  ;; ;; Whether display the battery status. It respects `display-battery-mode'.
-  ;; (setq doom-modeline-battery t)
+    ;; ;; Whether display the battery status. It respects `display-battery-mode'.
+    ;; (setq doom-modeline-battery t)
 
-  ;; ;; Whether display the time. It respects `display-time-mode'.
-  ;; (setq doom-modeline-time t)
+    ;; ;; Whether display the time. It respects `display-time-mode'.
+    ;; (setq doom-modeline-time t)
+
 
 #+end_src
 ** evil
@@ -1286,8 +1327,9 @@
   ;;
   ;; evil-state
   ;;
-  (use-package evil)
-  (require 'evil)
+  ;; (use-package evil)
+  ;; (require 'evil)
+  (leaf evil :ensure t :require t)
   (doom-modeline-def-segment evil-state
     "The current evil state.  Requires `evil-mode' to be enabled."
     (when (bound-and-true-p evil-local-mode)
@@ -1358,41 +1400,41 @@
 #+end_src
 ** keycast
 #+begin_src elisp
-    (use-package keycast)
-    (require 'keycast)
-  (keycast-header-line-mode)
+  ;;   (use-package keycast)
+  ;;   (require 'keycast)
+  ;; (keycast-header-line-mode)
+  (leaf keycast :ensure t :require t :config (keycast-header-line-mode))
 #+end_src
 ** ace-window
 #+begin_src elisp
-  (use-package ace-window)
-  ;; ace-window
-;; https://github.com/abo-abo/ace-window
-(global-set-key (kbd "C-x o") 'ace-window)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-(setq aw-minibuffer-flag 0)
+    (use-package ace-window)
+  (leaf ace-window :ensure t :require t)
+    ;; ace-window
+  ;; https://github.com/abo-abo/ace-window
+  (global-set-key (kbd "C-x o") 'ace-window)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (setq aw-minibuffer-flag 0)
 
 #+end_src
 ** e2wm
 #+begin_src elisp
-  ;;https://github.com/kiwanami/emacs-window-manager
-(use-package e2wm)
-(require 'e2wm)
-(global-set-key (kbd "M-+") 'e2wm:start-management)
+    ;;https://github.com/kiwanami/emacs-window-manager
+  ;; (use-package e2wm)
+  ;; (require 'e2wm)
+  ;; (global-set-key (kbd "M-+") 'e2wm:start-management)
+  (leaf e2wm :ensure t :require t :config (global-set-key (kbd "M-+") 'e2wm:start-management))
 
 #+end_src
 ** which-key
 #+begin_src elisp
-  (use-package which-key)
-  (require 'which-key)
+  (leaf which-key :ensure t :require t
+    :config
   (which-key-mode)
-  (which-key-setup-side-window-bottom)
-
+  (which-key-setup-side-window-bottom))
 #+end_src
-
-* よくわかってないやつ/使うか迷っているやつ
 ** company slime
 #+begin_src elisp
-  (leaf leaf-convert
+  (leaf slime
   :bind ((company-active-map
 	  ("" . company-select-next))
 	 (company-active-map
@@ -1408,39 +1450,56 @@
 #+end_src
 ** imenu-list
 #+begin_src elisp
-  ;; imenu-list
-  ;; https://github.com/bmag/imenu-list
-  (global-set-key (kbd "C-c C-@ o") 'imenu-list-smart-toggle)
-  (setq imenu-list-position 'right)
+      ;; imenu-list
+      ;; https://github.com/bmag/imenu-list
+      (leaf imenu-list :ensure t :require t :config
+        (global-set-key (kbd "C-c C-@ o") 'imenu-list-smart-toggle)
+      (setq imenu-list-position 'right)
+    )
 
 #+end_src
+** restart-emacs
+#+begin_src elisp
+  (leaf restart-emacs :ensure t :require t)
+#+end_src
+
+* use-package(require)で書いてある設定
+#+begin_src elisp
+  ;;   (require 'use-package)
+  ;; (use-package all-the-icons
+  ;;   :if (display-graphic-p))
+
+#+end_src
+
+
+* よくわかってないやつ/使うか迷っているやつ
 ** ace-jump
 #+begin_src elisp
-  (leaf ace-jump-mode
-  :ensure t
-  :bind (("C-c j" . ace-jump-mode)))
+  ;; (leaf ace-jump-mode
+  ;; :ensure t
+  ;; :bind (("C-c j" . ace-jump-mode)))
 #+end_src
 ** calfw
 #+begin_src elisp
-  (require 'calfw)
-  (require 'calfw-org)
-  (setq cfw:org-agenda-schedule-args '(:timestamp))
-  ;; Month
-  (setq calendar-month-name-array
-        ["1月" "2月" "3月" "4月" "5月" "6月" "7月" "8月" "9月" "10月" "11月" "12月"])
+  ;; (require 'calfw)
+  ;; (require 'calfw-org)
+  ;; (setq cfw:org-agenda-schedule-args '(:timestamp))
+  ;; ;; Month
+  ;; (setq calendar-month-name-array
+  ;;       ["1月" "2月" "3月" "4月" "5月" "6月" "7月" "8月" "9月" "10月" "11月" "12月"])
 
-  ;; Week days
-  (setq calendar-day-name-array
-        ["日曜日" "月曜日" "火曜日" "水曜日" "木曜日" "金曜日" "土曜日"])
+  ;; ;; Week days
+  ;; (setq calendar-day-name-array
+  ;;       ["日曜日" "月曜日" "火曜日" "水曜日" "木曜日" "金曜日" "土曜日"])
 
-  ;; First day of the week
-  (setq calendar-week-start-day 0) ; 0:Sunday, 1:Monday
+  ;; ;; First day of the week
+  ;; (setq calendar-week-start-day 0) ; 0:Sunday, 1:Monday
 
 #+end_src
 ** ditaa
 #+begin_src elisp
   ;; https://qiita.com/tnoda_/items/e236c019f6ad0903d320
-  (add-to-list 'org-babel-default-header-args:ditaa '(:eps . t))
+  ;; (add-to-list 'org-babel-default-header-args:ditaa '(:eps . t))
 
 #+end_src
 ** sbcl
@@ -1473,10 +1532,10 @@
 #+end_src
 ** dmacro
 #+begin_src elisp
-  (leaf dmacro
-  :ensure t
-  :custom `((dmacro-key . ,(kbd "C-S-e")))
-  :global-minor-mode global-dmacro-mode)
+  ;; (leaf dmacro
+  ;; :ensure t
+  ;; :custom `((dmacro-key . ,(kbd "C-S-e")))
+  ;; :global-minor-mode global-dmacro-mode)
 #+end_src
 
 * 便利な関数
@@ -1532,7 +1591,7 @@
 #+end_src
 * end leaf.el
 #+begin_src elisp
-  
+
 (provide 'init)
 
 ;; Local Variables:

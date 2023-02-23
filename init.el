@@ -5,6 +5,6 @@
  )
 (org-babel-load-file
  (expand-file-name
-  "config.org"
+  "leaf_config.org"
   user-emacs-directory)
  )
