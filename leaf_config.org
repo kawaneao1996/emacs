@@ -940,6 +940,7 @@
 #+begin_src elisp
   ;; https://www.yokoweb.net/2017/01/15/macos-emacs-emacsclient/
   ;; server start for emacs-client
+  (leaf server :ensure t :require t)
   (when window-system                       ; GUI時
     (require 'server)
     (unless (eq (server-running-p) 't)
@@ -958,7 +959,7 @@
       ;; (setq confirm-kill-emacs 'y-or-n-p)
       )
     )
-
+  ;; (make-frame-command)
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 #+end_src
