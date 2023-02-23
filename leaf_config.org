@@ -62,6 +62,13 @@
     (leaf-keywords-init)))
 
 #+end_src
+* privateに書いてたやつ
+特にprivateで管理する必要がなかった
+#+begin_src elisp
+  (setq org-journal-dir "~/デスクトップ/org/journal")
+  (setq org-agenda-files "~/デスクトップ/org/TODO.org")
+  (setq todofile org-agenda-files)
+#+end_src
 * 組み込みの設定
 #+begin_src elisp
     (menu-bar-mode -1)
